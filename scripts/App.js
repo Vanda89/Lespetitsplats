@@ -1,33 +1,51 @@
 class App {
   constructor () {
     this.recipeFactory = new RecipeFactory()
-    this.recipesContainer = document.querySelector('.recipes-container')
+    this.$recipesContainer = document.querySelector('.recipes-container')
+    this.recipesInstances = []
+    this.$cardList = []
   }
 
   async displayRecipes () {
-    dropdown.initializationDropdown()
-
-    const recipeInstances = recipes.map(
+    this.recipesInstances = recipes.map(
       (recipe) =>
         this.recipeFactory.createRecipe(recipe)
     )
 
-    recipeInstances.forEach((recipe) => {
+    this.recipesInstances.forEach((recipe) => {
       const recipeModel = new RecipeTemplate(recipe)
-      const $recipeCardDOM = recipeModel.createRecipeCardDOM()
-      console.log($recipeCardDOM)
-      recipeModel.assignRecipeValues($recipeCardDOM)
-      console.log($recipeCardDOM)
-
-      this.recipesContainer.appendChild($recipeCardDOM.$card)
-      console.log(this.recipesContainer)
-      recipeModel.assignRecipesClasses($recipeCardDOM)
+      const recipesCardDOM = recipeModel.createRecipeCardDOM()
+      recipeModel.assignRecipeValues(recipesCardDOM)
+      recipeModel.assignRecipesClasses(recipesCardDOM)
+      this.$recipesContainer.appendChild(recipesCardDOM.$card)
     })
-    console.log(this.recipesContainer)
+    this.$cardList = document.querySelectorAll('.recipes-card')
+  }
+
+  async filterRecipes () {
+    const $searchInput = document.querySelector('#search-input')
+
+    $searchInput?.addEventListener('input', () => {
+      const input = $searchInput.value
+      const result = this.recipesInstances.filter((recipe) => recipe._name.toLowerCase().substring(0, input.length) === input.toLowerCase())
+
+      this.$cardList.forEach((card) => {
+        const title = card.querySelector('.card-title')
+        if (result.some(recipe => recipe._name.toLowerCase() === title.textContent.toLowerCase())) {
+          card.classList.remove('hidden')
+          card.classList.add('flex')
+        } else {
+          card.classList.remove('flex')
+          card.classList.add('hidden')
+        }
+      })
+    })
   }
 
   async init () {
     await this.displayRecipes()
+    await dropdown.initializationDropdown()
+    await this.filterRecipes()
   }
 }
 

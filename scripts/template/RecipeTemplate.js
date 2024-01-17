@@ -1,7 +1,6 @@
 class RecipeTemplate {
   constructor (recipe) {
     this.recipe = recipe
-    console.log(this.recipe)
   }
 
   createRecipeCardDOM () {
@@ -75,13 +74,12 @@ class RecipeTemplate {
   }
 
   assignRecipesClasses (elements) {
-    console.log(elements.$card)
-    elements.$card.classList.add('flex', 'flex-col', 'w-96', 'h-182', 'bg-white', 'shadow-recipe-card', 'rounded-3xl')
+    elements.$card.classList.add('recipes-card', 'flex', 'flex-col', 'w-96', 'h-182', 'bg-white', 'shadow-recipe-card', 'rounded-3xl')
     elements.$thumbnailContainer.classList.add('relative', 'w-full', 'h-64')
     elements.$thumbnail.classList.add('object-cover', 'w-full', 'h-64', 'rounded-t-3xl')
     elements.$time.classList.add('absolute', 'top-5', 'right-5', 'px-3.5', 'py-1.5', 'text-xs', 'text-black', 'bg-yellow', 'rounded-full')
     elements.$cardContent.classList.add('flex', 'flex-col', 'p-6', 'gap-7')
-    elements.$cardTitle.classList.add('font-anton', 'text-lg')
+    elements.$cardTitle.classList.add('card-title', 'font-anton', 'text-lg')
     elements.$descriptionContainer.classList.add('flex', 'flex-col', 'gap-3.5')
     elements.$description.classList.add('line-clamp-4', 'text-sm', 'font-manrope', 'pr-4')
     elements.$descriptionTitle.classList.add('font-manrope', 'font-bold', 'text-grey-400', 'text-xs', 'uppercase')
@@ -89,7 +87,6 @@ class RecipeTemplate {
     elements.$ingredientsTitle.classList.add('font-manrope', 'font-bold', 'text-grey-400', 'text-xs', 'uppercase')
     elements.$ingredientsContent.classList.add('grid', 'grid-cols-2', 'gap-5', 'font-manrope', 'text-sm')
     elements.ingredients.forEach((ingredient) => {
-      ingredient.ingredient.classList.add()
       ingredient.name.classList.add('text-grey-700', 'font-medium')
       ingredient.quantity.classList.add('text-grey-400')
     })

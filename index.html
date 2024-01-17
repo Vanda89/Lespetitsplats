@@ -10,12 +10,12 @@
 
 <body class="bg-grey-100">
     <div class="main-container">
-        <header class="flex flex-col h-240">
+        <header class="flex flex-col h-240 gap-36">
             <div class="flex logo h-6 gap-1 ml-18 mt-18">
                 <img src="./assets/logo/Les_petits_plats.jpg" alt="Nom du site écrit dans le logo : Les petits plats">
                 <img src="./assets/icons/dish.png" alt="icône d'assiette rappelant le titre du site : Les petits plats">
             </div>
-            <div class="search flex flex-col gap-7.5 w-full mt-40">
+            <div class="search flex flex-col gap-7.5 w-full">
                 <h1 class="text-yellow text-4.5xl leading-14.5 text-center mx-69 px-20 py-3 font-anton uppercase">
                     Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
                 <nav class="search-bar relative w-auto h-18 mx-60">
@@ -36,7 +36,7 @@
             </div>
         </header>
         <main>
-            <section class="recipes-section flex flex-col gap-11 px-20">
+            <section class="recipes-section flex flex-col gap-11 px-24">
                 <div class="recipes-header flex justify-between mt-7">
                     <div class="filter-bar-container flex flex-col">
                         <nav class="filter-bar flex gap-16 w-171"></nav>
@@ -44,7 +44,7 @@
                     </div>
                     <p class="recipes-number mt-4 font-anton font-grey-700 text-xl"><span>1500</span> recettes</p>
                 </div>
-                <div class="recipes-container flex flex-wrap justify-between top-33 gap-x-12 gap-y-16 ">
+                <div class="recipes-container grid grid-cols-3 2xl:grid-cols-4 top-33 gap-x-12 gap-y-16 ">
                 </div>
             </section>
         </main>
