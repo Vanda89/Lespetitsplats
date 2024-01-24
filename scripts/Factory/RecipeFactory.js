@@ -8,7 +8,7 @@ class Recipe {
     this._time = recipes.time
     this._description = recipes.description
     this._appliance = recipes.appliance
-    this._ustensils = recipes.ustensils
+    this._utensils = recipes.utensils
   }
 
   get id () {
@@ -33,6 +33,10 @@ class Recipe {
     return this._ingredients
   }
 
+  get ingredientsList () {
+    return this._ingredients.map(ingredient => ingredient.ingredient)
+  }
+
   get time () {
     return this._time + ' min'
   }
@@ -45,8 +49,8 @@ class Recipe {
     return this._appliance
   }
 
-  get ustensils () {
-    return this._ustensils
+  get utensils () {
+    return this._utensils.slice()
   }
 }
 

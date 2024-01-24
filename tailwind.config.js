@@ -29,6 +29,7 @@ module.exports = {
         19: '4.75rem',
         25: '6.25rem',
         33: '8.25rem',
+        38: '9.5rem',
         50: '12.5rem'
       },
       margin: {
@@ -72,6 +73,12 @@ module.exports = {
       'grey-100': '#EDEDED'
     }
 
+  },
+  variants: {
+    extend: {
+      backgroundColor: ['disabled'],
+      cursor: ['disabled']
+    }
   },
   plugins: []
 }

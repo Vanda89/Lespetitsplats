@@ -47,6 +47,7 @@ class RecipeTemplate {
   }
 
   assignRecipeValues (elements) {
+    elements.$card.dataset.option = this.recipe.name
     elements.$thumbnail.src = this.recipe.image
     elements.$time.textContent = this.recipe.time
     elements.$cardTitle.textContent = this.recipe.name
@@ -90,5 +91,8 @@ class RecipeTemplate {
       ingredient.name.classList.add('text-grey-700', 'font-medium')
       ingredient.quantity.classList.add('text-grey-400')
     })
+  }
+
+  assignRecipesAttributes (elements) {
   }
 }

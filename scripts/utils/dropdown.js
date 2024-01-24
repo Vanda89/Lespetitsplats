@@ -21,7 +21,7 @@ const dropdown = {
     $chevronDownIcon.appendChild($chevronDownPath)
 
     const $dropdownMenu = document.createElement('div')
-    $dropdownMenu.classList.add('dropdown-menu', 'hidden', 'flex', 'flex-col', 'items-start', 'w-50', 'gap-3.25', 'bg-white', 'rounded-xl')
+    $dropdownMenu.classList.add('dropdown-menu', 'hidden', 'flex', 'flex-col', 'items-start', 'w-50', 'gap-3.25', 'bg-white', 'rounded-xl', 'shadow')
 
     const $dropdownHeader = document.createElement('div')
     $dropdownHeader.classList.add('dropdown-header', 'flex', 'justify-between', 'items-center', 'w-full', 'pt-4', 'px-4', 'cursor-pointer')
@@ -46,19 +46,25 @@ const dropdown = {
     const $searchInput = document.createElement('input')
     $searchInput.setAttribute('type', 'text')
     $searchInput.setAttribute('id', 'search')
-    $searchInput.classList.add('search-input', 'w-full', 'h-full', 'font-manrope', 'text-grey-400', 'text-sm', 'pl-2', 'rounded-sm', 'focus:outline-none')
+    $searchInput.classList.add('dropdown-search-input', 'w-full', 'h-full', 'font-manrope', 'text-grey-400', 'text-sm', 'pl-2', 'rounded-sm', 'focus:outline-none')
+
+    const $crossButton = document.createElement('button')
+    $crossButton.classList.add('dropdown-cross-button', 'w-4', 'h-4', 'absolute', 'right-5')
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     $crossIcon.setAttribute('viewBox', '0 0 24 24')
-    $crossIcon.classList.add('w-4', 'h-4', 'absolute', 'right-5', 'stroke-[#7A7A7A]', 'fill-[#7A7A7A]', 'stroke-0.5')
+    $crossIcon.classList.add('hidden', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-[#7A7A7A]', 'fill-[#7A7A7A]', 'stroke-0.5')
     const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     $crossPath.classList.add('translate-y-0.5')
     $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
     $crossIcon.appendChild($crossPath)
 
+    const $searchButton = document.createElement('button')
+    $searchButton.classList.add('dropdown-search-button', 'w-3.5', 'h-3.5', 'absolute', 'right-2')
+
     const $searchIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     $searchIcon.setAttribute('viewBox', '0 0 24 24')
-    $searchIcon.classList.add('w-3.5', 'h-3.5', 'absolute', 'right-2', 'stroke-[#7A7A7A]', 'stroke-1', 'fill-none')
+    $searchIcon.classList.add('w-3.5', 'h-3.5', 'stroke-[#7A7A7A]', 'stroke-1', 'fill-none')
     const $searchPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     $searchPath.setAttribute('d', 'm21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z')
     $searchIcon.appendChild($searchPath)
@@ -76,28 +82,26 @@ const dropdown = {
     $dropdownHeader.appendChild($dropdownLabel)
     $dropdownHeader.appendChild($chevronUpIcon)
     $searchContainer.appendChild($searchInput)
-    $searchContainer.appendChild($crossIcon)
-    $searchContainer.appendChild($searchIcon)
+    $searchContainer.appendChild($crossButton)
+    $searchContainer.appendChild($searchButton)
+    $crossButton.appendChild($crossIcon)
+    $searchButton.appendChild($searchIcon)
 
     return $dropdown
   },
 
-  initializationDropdown () {
-    const $ingredientsDropdown = this.appendDropdown()
-    const $appliancesDropdown = this.appendDropdown()
-    const $toolsDropdown = this.appendDropdown()
-
+  initializationDropdown ($ingredientsDropdown, $appliancesDropdown, $utensilsDropdown) {
     this.openDropdown($ingredientsDropdown)
     this.closeDropdown($ingredientsDropdown)
-    this.setTextContent($ingredientsDropdown, 'Ingrédients', 'Crème de coco')
+    this.setTextContent($ingredientsDropdown, 'Ingrédients')
 
     this.openDropdown($appliancesDropdown)
     this.closeDropdown($appliancesDropdown)
-    this.setTextContent($appliancesDropdown, 'Appareils', 'Mixeur')
+    this.setTextContent($appliancesDropdown, 'Appareils')
 
-    this.openDropdown($toolsDropdown)
-    this.closeDropdown($toolsDropdown)
-    this.setTextContent($toolsDropdown, 'Ustensiles', 'Spatule')
+    this.openDropdown($utensilsDropdown)
+    this.closeDropdown($utensilsDropdown)
+    this.setTextContent($utensilsDropdown, 'Ustensiles')
   },
 
   openDropdown ($dropdown) {
@@ -119,49 +123,40 @@ const dropdown = {
     })
   },
 
-  appendDropdown (searchResults) {
+  appendDropdown () {
     const $filterBar = document.querySelector('.filter-bar')
     const $dropdown = dropdown.createDropdownDOM()
     $filterBar.appendChild($dropdown)
 
-    this.appendOption('option 1', $dropdown)
-    this.appendOption('option 2', $dropdown)
-    this.handleSelectionOption($dropdown)
-    /* Quand une recherche est effectuée, on affiche les options correspondantes
-    searchResults.forEach(result => {
-      this.appendOption(result, $dropdown)
-    })
-    */
-
-    /* Quand une option est sélectionnée, on l'ajoute dans le dropdown
-    this.appendOptionSelected('Option selected', $dropdown) */
     return $dropdown
   },
 
-  setTextContent ($dropdown, dropdownTitle, option) {
+  setTextContent ($dropdown, dropdownTitle) {
     const $dropdownSpan = $dropdown.querySelector('.dropdown-title')
     $dropdownSpan.textContent = dropdownTitle
     const $dropdownLabel = $dropdown.querySelector('.dropdown-label')
     $dropdownLabel.textContent = dropdownTitle
-    const $optionButton = $dropdown.querySelector('.option-button')
-    $optionButton.textContent = option
   },
 
   // Bouton de l'option à ajouter dans le dropdown pour chacune des options correspondant à la recherche
   appendOption (option, $dropdown) {
     const $optionContainer = $dropdown.querySelector('.option-container')
     const $optionButton = document.createElement('button')
-    $optionButton.classList.add('option-button', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'hover:bg-yellow', 'rounded-b-none', 'last:rounded-b-xl')
-    $optionButton.textContent = option
-    $optionContainer.appendChild($optionButton)
-  },
+    $optionButton.classList.add('option-button', 'relative', 'flex', 'items-center', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'rounded-b-none', 'last:rounded-b-xl', 'hover:bg-yellow', 'disabled:bg-yellow', 'disabled:cursor-not-allowed', 'disabled:font-bold')
+    $optionButton.setAttribute('type', 'button')
+    $optionButton.textContent = option.charAt(0).toUpperCase() + option.slice(1)
 
-  handleSelectionOption ($dropdown) {
-    const $optionButton = $dropdown.querySelector('.option-button')
-    $optionButton?.addEventListener('click', () => {
-      this.appendOptionSelected($optionButton.textContent, $dropdown)
-      this.removeOptionSelected()
-    })
+    const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    $crossIcon.setAttribute('viewBox', '0 0 24 24')
+    $crossIcon.classList.add('absolute', 'right-4', 'stroke-[#000]', 'fill-[#FFD15B]', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-0.5', 'rounded-xl')
+    const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    $crossPath.classList.add('translate-y-0.5')
+    $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
+    $crossIcon.appendChild($crossPath)
+
+    $optionButton.appendChild($crossIcon)
+
+    $optionContainer.appendChild($optionButton)
   },
 
   // Button a ajouté quand une option est sélectionnée
@@ -180,7 +175,7 @@ const dropdown = {
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     $crossIcon.setAttribute('viewBox', '0 0 24 24')
-    $crossIcon.classList.add('w-6', 'h-6', 'right-5', 'stroke-[#1B1B1B]', 'fill-none', 'stroke-2')
+    $crossIcon.classList.add('close-option-icon', 'w-6', 'h-6', 'right-5', 'stroke-[#1B1B1B]', 'fill-none', 'stroke-2')
     const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     $crossPath.classList.add('translate-y-0.5')
     $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
@@ -190,15 +185,6 @@ const dropdown = {
     $optionSelected.appendChild($optionSelectedSpan)
     $optionSelected.appendChild($closeButton)
     $optionSelectedContainer?.appendChild($optionSelected)
-  },
-
-  // Suppression de l'option sélectionnée
-  removeOptionSelected () {
-    const $optionSelected = document.querySelector('.option-selected')
-    const $closeButton = document.querySelector('.close-option-button')
-    $closeButton?.addEventListener('click', () => {
-      $optionSelected?.classList.add('hidden')
-    })
   }
 
 }

@@ -10,23 +10,30 @@
 
 <body class="bg-grey-100">
     <div class="main-container">
-        <header class="flex flex-col h-240 gap-36">
-            <div class="flex logo h-6 gap-1 ml-18 mt-18">
+        <header class="flex flex-col justify-center h-240 relative">
+            <div class="flex absolute logo h-6 gap-1 left-18 top-18">
                 <img src="./assets/logo/Les_petits_plats.jpg" alt="Nom du site écrit dans le logo : Les petits plats">
                 <img src="./assets/icons/dish.png" alt="icône d'assiette rappelant le titre du site : Les petits plats">
             </div>
-            <div class="search flex flex-col gap-7.5 w-full">
+            <div class="search flex flex-col gap-7.5 w-full ">
                 <h1 class="text-yellow text-4.5xl leading-14.5 text-center mx-69 px-20 py-3 font-anton uppercase">
                     Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
                 <nav class="search-bar relative w-auto h-18 mx-60">
-                    <input type="text" id="search-input"
+                    <input type="text" id="main-search-input"
                         class="font-manrope w-full h-full pl-9 rounded-md focus:outline-none"
                         placeholder="Rechercher une recette, un ingrédient, ...">
-                    <button id="search-button"
+                    <button id="main-cross-button" class="absolute top-5 right-16 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="main-cross-icon"
+                            class="hidden w-8 h-8 stroke-[#7A7A7A] fill-[#7A7A7A] stroke-0.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" class="translate-y-0.5 stroke-1.5 "
+                                d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                    <button id="main-search-button"
                         class="absolute top-2.5 right-2.5 bg-grey-700 rounded-md w-12 h-13 flex justify-center items-center"
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="white" class="w-7 h-7">
+                            class="w-7 h-7 stroke-[#FFF]">
 
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -37,12 +44,14 @@
         </header>
         <main>
             <section class="recipes-section flex flex-col gap-11 px-24">
-                <div class="recipes-header flex justify-between mt-7">
-                    <div class="filter-bar-container flex flex-col">
+                <div class="recipes-header flex flex-col justify-between mt-7">
+                    <div class="filter-bar-container relative flex">
                         <nav class="filter-bar flex gap-16 w-171"></nav>
-                        <div class="option-selected-container flex gap-8 mt-19"></div>
+                        <p class="recipes-number absolute right-0 font-anton font-grey-700 text-xl"><span>1500</span>
+                            recettes
+                        </p>
                     </div>
-                    <p class="recipes-number mt-4 font-anton font-grey-700 text-xl"><span>1500</span> recettes</p>
+                    <div class="option-selected-container flex flex-wrap gap-8 mt-19"></div>
                 </div>
                 <div class="recipes-container grid grid-cols-3 2xl:grid-cols-4 top-33 gap-x-12 gap-y-16 ">
                 </div>
