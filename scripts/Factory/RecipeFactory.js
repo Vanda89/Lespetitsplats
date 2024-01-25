@@ -34,7 +34,7 @@ class Recipe {
   }
 
   get ingredientsList () {
-    return this._ingredients.map(ingredient => ingredient.ingredient)
+    return this._ingredients.map(ingredient => ingredient.ingredient.charAt(0).toUpperCase() + ingredient.ingredient.slice(1).toLowerCase())
   }
 
   get time () {

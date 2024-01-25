@@ -4,11 +4,15 @@ class App {
     this.$recipesContainer = document.querySelector('.recipes-container')
     this.$recipesCards = []
     this.$optionsButtons = []
+    this.mainInput = ''
+    this.dropdownInput = ''
     this.recipesList = []
     this.filteredRecipesList = []
     this.optionsList = []
+    this.updatedOptionsList = this.optionsList.flat()
     this.filteredOptionsList = []
     this.selectedOptionsList = []
+    this.recipesNumber = 0
     this.mainCrossIcon = document.querySelector('#main-cross-icon')
   }
 
@@ -78,7 +82,7 @@ class App {
 
   toggleElementVisibility (elementList, filteredList, optionProperty = null, useTextContent = false) {
     elementList.forEach((element) => {
-      if (filteredList.some(filter => {
+      if (filteredList === elementList || filteredList.some(filter => {
         // If the filter is an object, use the optionProperty to get the value to compare
         const filterValue = typeof filter === 'object' ? filter[optionProperty].toLowerCase() : filter.toLowerCase()
         // If the element is a button, use the text content to get the value to compare
@@ -86,9 +90,7 @@ class App {
         return filterValue === elementValue
       })) {
         element.classList.remove('hidden')
-        element.classList.add('flex')
       } else {
-        element.classList.remove('flex')
         element.classList.add('hidden')
       }
     })
@@ -101,20 +103,39 @@ class App {
 
     // Add event listeners to the main search input and the cross button
     $mainSearchInput?.addEventListener('input', () => {
-      const input = $mainSearchInput.value
-      if (input) {
+      this.mainInput = $mainSearchInput.value.toLowerCase()
+
+      console.log(this.mainInput)
+      if (this.mainInput) {
         this.addSearchResetListener($mainCrossButton, this.mainCrossIcon, this.$recipesCards, () => {}, $mainSearchInput)
         this.mainCrossIcon.classList.remove('hidden')
       } else {
         this.mainCrossIcon.classList.add('hidden')
       }
 
-      // Filter the recipes based on the user's search
-      this.filteredRecipesList = this.recipesList.filter((recipe) => recipe._name.toLowerCase().substring(0, input.length) === input.toLowerCase())
+      if (this.mainInput.length >= 3) {
+        // Filter the recipes based on the user's search on the name, the description and the ingredients
+        this.filteredRecipesList = this.recipesList.filter((recipe) => {
+          const nameMatches = recipe._name.toLowerCase().includes(this.mainInput)
+          const descriptionMatches = recipe._description.toLowerCase().includes(this.mainInput)
+          const ingredientsMatches = recipe._ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(this.mainInput))
 
-      // Filter the recipes cards based on the user's search and hide the others
-      this.toggleElementVisibility(this.$recipesCards, this.filteredRecipesList, '_name', false)
+          // Check if the recipe matches the current filters
+          const matchesFilters = this.selectedOptionsList.every((selectedOption) =>
+            recipe.ingredientsList.includes(selectedOption) ||
+      recipe.appliance.includes(selectedOption) ||
+      recipe.utensils.includes(selectedOption)
+          )
 
+          return (nameMatches || descriptionMatches || ingredientsMatches) && matchesFilters
+        })
+
+        // Filter the recipes cards based on the user's search and hide the others
+        this.toggleElementVisibility(this.$recipesCards, this.filteredRecipesList, '_name', false)
+      } else {
+        this.filteredRecipesList = this.recipesList
+        this.toggleElementVisibility(this.$recipesCards, this.filteredRecipesList, '_name', false)
+      }
       // Hide the options that do not match the user's search
       this.hideOptionsAfterSearch('ingredientsList', this.$ingredientsDropdown)
       this.hideOptionsAfterSearch('appliance', this.$appliancesDropdown)
@@ -123,11 +144,34 @@ class App {
   }
 
   hideOptionsAfterSearch (option, dropdown) {
-    let filteredCardOptions = this.filteredRecipesList
-      .map(recipe => recipe[option])
-      .flat()
+    // Get the search input inside the dropdown
+    const searchInput = dropdown.querySelector('.search-input')
 
-    filteredCardOptions = [...new Set(filteredCardOptions)]
+    // Filter the options based on the user's search and hide the others
+    // If the user's search is less than 3 characters, display all the options
+    // If the user's search is more than 3 characters, display only the options
+    // that match the user's search and the options that are selected
+    let filteredCardOptions
+    if (this.mainInput.length >= 3) {
+      filteredCardOptions = this.filteredRecipesList
+        .map(recipe => recipe[option])
+        .flat()
+
+      filteredCardOptions = [...new Set(filteredCardOptions)]
+    } else {
+      filteredCardOptions = this.recipesList
+        .map(recipe => recipe[option])
+        .flat()
+
+      filteredCardOptions = [...new Set(filteredCardOptions)]
+    }
+
+    // Filter the options based on the user's search in the dropdown
+    if (searchInput) {
+      filteredCardOptions = filteredCardOptions.filter(option =>
+        option.toLowerCase().includes(searchInput.toLowerCase())
+      )
+    }
 
     const optionsButtons = this.getDropdownElements(dropdown).options
     this.toggleElementVisibility(optionsButtons, filteredCardOptions, option, true)
@@ -150,109 +194,172 @@ class App {
     })
   }
 
+  addCloseOptionListener ($closeButtons, $optionsButtons, optionProperty) {
+    $closeButtons.forEach(($closeButton) => {
+      $closeButton?.addEventListener('click', () => {
+        this.removeOptionSelected($closeButton, this.selectedOptionsList, $optionsButtons, optionProperty)
+      })
+    })
+  }
+
   filterOptions (searchInput, dropdown, crossButton, crossIcon, optionsButtons) {
     // Add event listener to the search input to filter the options
     searchInput.addEventListener('input', () => {
       const input = searchInput.value.toLowerCase()
-      this.filteredOptionsList = this.optionsList
-        .flat()
+
+      // Use the updated options list if an option has been selected, otherwise use the original options list
+      const optionsListToUse = this.selectedOptionsList.length > 0 ? this.updatedOptionsList : this.optionsList.flat()
+
+      // Filter the options based on the user's search
+      const currentSearchOptionsList = optionsListToUse
         .filter((option) =>
-          option.toLowerCase().substring(0, input.length) === input.toLowerCase()
+          option.toLowerCase().includes(input)
         )
+
+      console.log(currentSearchOptionsList)
+      console.log(this.updatedOptionsList)
+
+      // Add event listener to the cross button to reset the search
       if (input) {
-        this.addSearchResetListener(crossButton, crossIcon, optionsButtons, () => {}, searchInput)
         crossIcon.classList.remove('hidden')
-      } else {
-        crossIcon.classList.add('hidden')
+        this.addSearchResetListener(crossButton, crossIcon, optionsButtons, () => {}, searchInput)
       }
+
       console.log(this.filteredRecipesList)
 
       // Filter the options based on the user's search and hide the others
-      this.toggleElementVisibility(optionsButtons, this.filteredOptionsList, null, true)
-    })
-  }
-
-  selectOption ($dropdown, optionProperty) {
-    const $optionsButtons = $dropdown.querySelectorAll('.option-button')
-    $optionsButtons.forEach(($optionButton) => {
-      $optionButton?.addEventListener('click', () => {
-        // Add the option to the selected options list
-        this.selectedOptionsList.push($optionButton.textContent)
-        // Disabled the option button when it is selected
-        $optionButton.disabled = true
-        $optionButton.classList.add('disabled')
-        // Append the option selected in the dropdown with the text content of the option button
-        dropdown.appendOptionSelected($optionButton.textContent, $dropdown)
-
-        // Filter the recipes based on the option selected
-        this.filterRecipesByOption(optionProperty)
-        // Call the function to add the event listener to the close button of the option selected
-        this.removeOptionSelected(this.selectedOptionsList, $optionsButtons, optionProperty)
-
-        // Hide the options that do not match the user's search
-        this.hideOptionsAfterSearch('ingredientsList', this.$ingredientsDropdown)
-        this.hideOptionsAfterSearch('appliance', this.$appliancesDropdown)
-        this.hideOptionsAfterSearch('utensils', this.$utensilsDropdown)
-      })
+      this.toggleElementVisibility(optionsButtons, currentSearchOptionsList, null, true)
     })
   }
 
   filterRecipesByOption (optionProperty) {
-    //
+    // Filter the recipes based on the remaining selected options and the user's search
     const recipesListToFilter = this.filteredRecipesList.length > 0 ? this.filteredRecipesList : this.recipesList
 
-    const filteredRecipes = recipesListToFilter.filter((recipe) => {
-      const options = recipe[optionProperty]
-      return options && Array.isArray(options) && this.selectedOptionsList.every(selectedOption =>
+    // Filter the recipes based on the remaining selected options
+    this.filteredRecipesList = recipesListToFilter.filter((recipe) => {
+      let options = recipe[optionProperty]
+      options.flat()
+      options = [...new Set(options)]
+
+      return options && Array.isArray(options) &&
+      this.selectedOptionsList.every(selectedOption =>
         options.includes(selectedOption)
       )
     })
 
-    //
-    this.filteredRecipesList = filteredRecipes
-
-    //
-    this.toggleElementVisibility(this.$recipesCards, filteredRecipes, '_name', false)
+    // Update the updatedOptionsList with the ingredients of the remaining recipes
+    this.updatedOptionsList = [...new Set(this.filteredRecipesList.map(recipe => recipe[optionProperty]).flat())]
+    console.log(this.updatedOptionsList)
   }
 
-  removeOptionSelected (selectedOptionsList, $optionsButtons, optionProperty) {
-    const $closeButtons = document.querySelectorAll('.close-option-button')
-    $closeButtons.forEach(($closeButton) => {
-      $closeButton?.addEventListener('click', () => {
-        const $optionSelected = $closeButton.parentElement
-        $optionSelected?.classList.add('hidden')
+  updateViewAfterFiltering (optionProperty, $optionsButtons) {
+    // Filter the recipes based on the option selected
+    this.filterRecipesByOption(optionProperty)
 
-        // Remove the option from the selected options list
-        const optionIndex = selectedOptionsList.indexOf($optionSelected.textContent)
-        if (optionIndex > -1) {
-          selectedOptionsList.splice(optionIndex, 1)
-        }
+    // Filter the recipes cards based on the user's search and hide the others
+    this.toggleElementVisibility(this.$recipesCards, this.filteredRecipesList, '_name', false)
 
-        // Enable all option buttons
-        $optionsButtons.forEach(($optionButton) => {
-          $optionButton.disabled = false
-          $optionButton.classList.remove('disabled')
-        })
+    // Get the list of options to show
+    const optionsList = this.filteredRecipesList
+      .map(recipe => recipe[optionProperty])
+      .flat()
 
-        // Reinitialize the filtered recipes list to the original recipes list
-        this.filteredRecipesList = this.recipesList
+    // Hide the options that do not match the user's search
+    this.toggleElementVisibility($optionsButtons, optionsList, optionProperty, true)
+  }
 
-        /* Filter the recipes based on the user's search
-        to display the recipes corresponding to the user's search
-        after the option is removed */
-        const $mainSearchInput = document.querySelector('#main-search-input')
-        const input = $mainSearchInput.value
-        this.filteredRecipesList = this.filteredRecipesList.filter((recipe) => recipe._name.toLowerCase().substring(0, input.length) === input.toLowerCase())
+  selectOption ($dropdown, optionProperty, input) {
+    // Add event listener to the option buttons to select the option
+    const $optionsButtons = $dropdown.querySelectorAll('.option-button')
+    $optionsButtons.forEach(($optionButton) => {
+      $optionButton?.addEventListener('click', () => {
+        // Reset the user's search
+        input.value = ''
 
-        // Filter the recipes based on the remaining selected options
-        this.filterRecipesByOption(optionProperty)
+        // Add the option to the selected options list
+        this.selectedOptionsList.push($optionButton.textContent)
+        console.log(this.selectedOptionsList)
 
-        // Hide the options that do not match the user's search
-        this.hideOptionsAfterSearch('ingredientsList', this.$ingredientsDropdown)
-        this.hideOptionsAfterSearch('appliance', this.$appliancesDropdown)
-        this.hideOptionsAfterSearch('utensils', this.$utensilsDropdown)
+        this.updatedOptionsList = this.updatedOptionsList
+          .filter(option => option !== $optionButton.textContent)
+
+        console.log(this.updatedOptionsList)
+        // console.log(this.optionsList)
+
+        // Filter the recipes based on the option selected
+        this.updateViewAfterFiltering(optionProperty, $optionsButtons)
+
+        // Hide the option button selected
+        $optionButton.classList.add('hidden')
+
+        // Append the option button selected inside the dropdown
+        // and add event listener to the close button
+        const $optionContainer = $dropdown.querySelector('.option-container')
+        const $optionSelected = dropdown.appendOption($optionButton.textContent, $dropdown)
+        $optionContainer.insertBefore($optionSelected, $optionContainer.firstChild)
+        $optionSelected.classList.add('option-button-selected', 'bg-yellow', 'font-bold')
+        const $closeButtonSelected = $optionSelected.querySelector('.close-option-button')
+        $closeButtonSelected.classList.remove('hidden')
+        // Add event listener to the close button of the option button inside the dropdown
+        const $closeButtonsSelected = document.querySelectorAll('.close-option-button')
+        this.addCloseOptionListener($closeButtonsSelected, $optionsButtons, optionProperty)
+
+        // Append the option selected outside the dropdown
+        // and add event listener to the close button
+        dropdown.appendOptionSelected($optionButton.textContent, $dropdown)
+        const $closeOptionsSelected = document.querySelectorAll('.close-option-selected')
+        this.addCloseOptionListener($closeOptionsSelected, $optionsButtons, optionProperty)
       })
     })
+  }
+
+  // $optionSelected: the buttons outside the dropdown
+  // $optionButton: the buttons inside the dropdown
+  // $optionButtonSelected: the copies of the buttons inside the dropdown
+  removeOptionSelected (button, selectedOptionsList, $optionsButtons, optionProperty) {
+    const $optionSelected = button.parentElement
+
+    // Remove the option from the selected options list
+    const optionIndex = selectedOptionsList.indexOf($optionSelected.textContent)
+    if (optionIndex > -1) {
+      selectedOptionsList.splice(optionIndex, 1)
+    }
+    console.log(optionIndex)
+
+    const $optionsSelected = document.querySelectorAll('.option-selected')
+    const $option = Array.from($optionsSelected).find(
+      $option => $option.textContent === button.parentElement.textContent
+    )
+
+    const $optionButton = Array.from($optionsButtons).find(
+      $button => $button.textContent === $optionSelected.textContent
+    )
+
+    const $optionsButtonsSelected = document.querySelectorAll('.option-button-selected')
+    const $optionButtonSelected = Array.from($optionsButtonsSelected).find(
+      $button => $button.textContent === $option.textContent
+    )
+
+    $optionButton.classList.remove('hidden')
+    if ($optionButtonSelected) {
+      $optionButtonSelected.remove()
+      $option.remove()
+    }
+
+    // Reinitialize the filtered recipes list to the original recipes list
+    this.filteredRecipesList = this.recipesList
+
+    /* Filter the recipes based on the user's search
+        to display the recipes corresponding to the user's search
+        after the option is removed */
+    const $mainSearchInput = document.querySelector('#main-search-input')
+    const input = $mainSearchInput.value
+    this.mainInput = input
+    this.filteredRecipesList = this.filteredRecipesList.filter((recipe) => recipe._name.toLowerCase().substring(0, input.length) === input.toLowerCase())
+
+    // Filter the recipes based on the remaining selected options
+    this.updateViewAfterFiltering(optionProperty, $optionsButtons)
   }
 
   async init () {
@@ -272,9 +379,9 @@ class App {
     this.filterOptions(appliancesElements.searchInput, this.$appliancesDropdown, appliancesElements.crossButton, appliancesElements.crossIcon, appliancesElements.options)
     this.filterOptions(utensilsElements.searchInput, this.$utensilsDropdown, utensilsElements.crossButton, utensilsElements.crossIcon, utensilsElements.options)
 
-    this.selectOption(this.$ingredientsDropdown, 'ingredientsList')
-    this.selectOption(this.$appliancesDropdown, 'appliance')
-    this.selectOption(this.$utensilsDropdown, 'utensils')
+    this.selectOption(this.$ingredientsDropdown, 'ingredientsList', ingredientsElements.searchInput)
+    this.selectOption(this.$appliancesDropdown, 'appliance', appliancesElements.searchInput)
+    this.selectOption(this.$utensilsDropdown, 'utensils', utensilsElements.searchInput)
   }
 }
 

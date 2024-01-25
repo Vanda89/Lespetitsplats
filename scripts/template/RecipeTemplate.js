@@ -47,10 +47,10 @@ class RecipeTemplate {
   }
 
   assignRecipeValues (elements) {
-    elements.$card.dataset.option = this.recipe.name
+    elements.$card.dataset.option = this.recipe.name.toLowerCase()
     elements.$thumbnail.src = this.recipe.image
     elements.$time.textContent = this.recipe.time
-    elements.$cardTitle.textContent = this.recipe.name
+    elements.$cardTitle.textContent = this.recipe.name.charAt(0).toUpperCase() + this.recipe.name.slice(1).toLowerCase()
     elements.$descriptionTitle.textContent = 'Recette'
     elements.$description.textContent = this.recipe.description
     elements.$ingredientsTitle.textContent = 'Ingrédients'
@@ -59,7 +59,7 @@ class RecipeTemplate {
       const $ingredientName = document.createElement('li')
       const $ingredientQuantity = document.createElement('li')
 
-      $ingredientName.textContent = ingredient.ingredient
+      $ingredientName.textContent = ingredient.ingredient.charAt(0).toUpperCase() + ingredient.ingredient.slice(1).toLowerCase()
       $ingredientQuantity.textContent = ((ingredient.quantity) ? ` ${ingredient.quantity}` : ' ') + ((ingredient.unit) ? ` ${ingredient.unit}` : ' ')
 
       $ingredients.appendChild($ingredientName)

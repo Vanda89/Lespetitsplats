@@ -142,13 +142,13 @@ const dropdown = {
   appendOption (option, $dropdown) {
     const $optionContainer = $dropdown.querySelector('.option-container')
     const $optionButton = document.createElement('button')
-    $optionButton.classList.add('option-button', 'relative', 'flex', 'items-center', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'rounded-b-none', 'last:rounded-b-xl', 'hover:bg-yellow', 'disabled:bg-yellow', 'disabled:cursor-not-allowed', 'disabled:font-bold')
+    $optionButton.classList.add('option-button', 'relative', 'flex', 'items-center', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'rounded-b-none', 'last:rounded-b-xl', 'hover:bg-yellow')
     $optionButton.setAttribute('type', 'button')
     $optionButton.textContent = option.charAt(0).toUpperCase() + option.slice(1)
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     $crossIcon.setAttribute('viewBox', '0 0 24 24')
-    $crossIcon.classList.add('absolute', 'right-4', 'stroke-[#000]', 'fill-[#FFD15B]', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-0.5', 'rounded-xl')
+    $crossIcon.classList.add('close-option-button', 'hidden', 'absolute', 'right-3', 'stroke-[#000]', 'fill-[#FFD15B]', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-0.5', 'rounded-xl')
     const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     $crossPath.classList.add('translate-y-0.5')
     $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
@@ -157,6 +157,8 @@ const dropdown = {
     $optionButton.appendChild($crossIcon)
 
     $optionContainer.appendChild($optionButton)
+
+    return $optionButton
   },
 
   // Button a ajouté quand une option est sélectionnée
@@ -171,7 +173,7 @@ const dropdown = {
     $optionSelectedSpan.textContent = optionSelected
 
     const $closeButton = document.createElement('button')
-    $closeButton.classList.add('close-option-button', 'absolute', 'right-5')
+    $closeButton.classList.add('close-option-selected', 'absolute', 'right-5')
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     $crossIcon.setAttribute('viewBox', '0 0 24 24')
