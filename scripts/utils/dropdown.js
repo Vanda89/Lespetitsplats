@@ -70,7 +70,10 @@ const dropdown = {
     $searchIcon.appendChild($searchPath)
 
     const $optionContainer = document.createElement('div')
-    $optionContainer.classList.add('option-container', 'flex', 'flex-col', 'w-full', 'items-start', 'mt-3')
+    $optionContainer.classList.add('option-container', 'flex', 'flex-col', 'items-start', 'w-full', 'max-h-80', 'mt-3', 'overflow-auto')
+
+    const $buttonSelectedContainer = document.createElement('div')
+    $buttonSelectedContainer.classList.add('button-selected-container', 'flex', 'flex-col', 'w-full', 'rounded-b-none', 'last:rounded-b-xl')
 
     $dropdownButton.appendChild($dropdownSpan)
     $dropdownButton.appendChild($chevronDownIcon)
@@ -86,6 +89,7 @@ const dropdown = {
     $searchContainer.appendChild($searchButton)
     $crossButton.appendChild($crossIcon)
     $searchButton.appendChild($searchIcon)
+    $optionContainer.appendChild($buttonSelectedContainer)
 
     return $dropdown
   },
@@ -108,8 +112,8 @@ const dropdown = {
     const $dropdownButton = $dropdown.querySelector('.dropdown-button')
     const $dropdownMenu = $dropdown.querySelector('.dropdown-menu')
     $dropdownButton?.addEventListener('click', () => {
-      $dropdownMenu.classList.remove('hidden')
-      $dropdownButton.classList.add('hidden')
+      $dropdownMenu?.classList.remove('hidden')
+      $dropdownButton?.classList.add('hidden')
     })
   },
 
@@ -118,15 +122,22 @@ const dropdown = {
     const $dropdownMenu = $dropdown.querySelector('.dropdown-menu')
     const $dropdownHeader = $dropdown.querySelector('.dropdown-header')
     $dropdownHeader?.addEventListener('click', () => {
-      $dropdownMenu.classList.add('hidden')
-      $dropdownButton.classList.remove('hidden')
+      $dropdownMenu?.classList.add('hidden')
+      $dropdownButton?.classList.remove('hidden')
+    })
+
+    document.addEventListener('click', (event) => {
+      if (!$dropdown?.contains(event.target)) {
+        $dropdownMenu?.classList.add('hidden')
+        $dropdownButton?.classList.remove('hidden')
+      }
     })
   },
 
   appendDropdown () {
     const $filterBar = document.querySelector('.filter-bar')
     const $dropdown = dropdown.createDropdownDOM()
-    $filterBar.appendChild($dropdown)
+    $filterBar?.appendChild($dropdown)
 
     return $dropdown
   },
@@ -142,21 +153,28 @@ const dropdown = {
   appendOption (option, $dropdown) {
     const $optionContainer = $dropdown.querySelector('.option-container')
     const $optionButton = document.createElement('button')
-    $optionButton.classList.add('option-button', 'relative', 'flex', 'items-center', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'rounded-b-none', 'last:rounded-b-xl', 'hover:bg-yellow')
-    $optionButton.setAttribute('type', 'button')
+    $optionButton?.classList.add('option-button', 'relative', 'flex', 'items-center', 'font-manrope', 'text-left', 'text-sm', 'font-grey-700', 'w-full', 'px-4', 'py-2.5', 'hover:bg-yellow')
+    $optionButton?.setAttribute('type', 'button')
     $optionButton.textContent = option.charAt(0).toUpperCase() + option.slice(1)
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    $crossIcon.setAttribute('viewBox', '0 0 24 24')
-    $crossIcon.classList.add('close-option-button', 'hidden', 'absolute', 'right-3', 'stroke-[#000]', 'fill-[#FFD15B]', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-0.5', 'rounded-xl')
+    $crossIcon?.setAttribute('viewBox', '0 0 24 24')
+    $crossIcon?.classList.add('close-option-button', 'hidden', 'absolute', 'right-3', 'stroke-yellow', 'fill-black', 'dropdown-cross-icon', 'w-4', 'h-4', 'stroke-0.5', 'rounded-xl')
+    const $crossCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+    $crossCircle?.setAttribute('cx', '8.5')
+    $crossCircle?.setAttribute('cy', '10')
+    $crossCircle?.setAttribute('r', '8.5')
+    $crossIcon?.appendChild($crossCircle)
     const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    $crossPath.classList.add('translate-y-0.5')
-    $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
-    $crossIcon.appendChild($crossPath)
+    $crossPath.classList?.add('translate-y-0.5')
+    $crossPath?.setAttribute('d', 'M11 11L8.5 8.5M8.5 8.5L6 6M8.5 8.5L11 6M8.5 8.5L6 11')
+    $crossPath?.setAttribute('stroke-linecap', 'round')
+    $crossPath?.setAttribute('stroke-linejoin', 'round')
+    $crossIcon?.appendChild($crossPath)
 
-    $optionButton.appendChild($crossIcon)
+    $optionButton?.appendChild($crossIcon)
 
-    $optionContainer.appendChild($optionButton)
+    $optionContainer?.appendChild($optionButton)
 
     return $optionButton
   },
@@ -166,26 +184,28 @@ const dropdown = {
     const $optionSelectedContainer = document.querySelector('.option-selected-container')
 
     const $optionSelected = document.createElement('div')
-    $optionSelected.classList.add('option-selected', 'relative', 'flex', 'justify-start', 'items-center', 'h-9', 'p-6.5', 'text-sm', 'bg-yellow', 'rounded-xl')
+    $optionSelected?.classList.add('option-selected', 'relative', 'flex', 'justify-start', 'items-center', 'h-9', 'p-6.5', 'text-sm', 'bg-yellow', 'rounded-xl')
 
     const $optionSelectedSpan = document.createElement('span')
-    $optionSelectedSpan.classList.add('option-selected-span', 'font-manrope', 'text-sm', 'font-grey-700', 'mr-16')
+    $optionSelectedSpan?.classList.add('option-selected-span', 'font-manrope', 'text-sm', 'font-grey-700', 'mr-16')
     $optionSelectedSpan.textContent = optionSelected
 
     const $closeButton = document.createElement('button')
-    $closeButton.classList.add('close-option-selected', 'absolute', 'right-5')
+    $closeButton.classList?.add('close-option-selected', 'absolute', 'right-5')
 
     const $crossIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    $crossIcon.setAttribute('viewBox', '0 0 24 24')
-    $crossIcon.classList.add('close-option-icon', 'w-6', 'h-6', 'right-5', 'stroke-[#1B1B1B]', 'fill-none', 'stroke-2')
+    $crossIcon?.setAttribute('viewBox', '0 0 24 24')
+    $crossIcon?.classList.add('close-option-icon', 'w-6', 'h-6', 'right-5', 'stroke-[#1B1B1B]', 'fill-none', 'stroke-2')
     const $crossPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    $crossPath.classList.add('translate-y-0.5')
-    $crossPath.setAttribute('d', 'M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z')
-    $crossIcon.appendChild($crossPath)
+    $crossPath?.classList.add('translate-y-1.6')
+    $crossPath?.setAttribute('stroke-linecap', 'round')
+    $crossPath?.setAttribute('stroke-linejoin', 'round')
+    $crossPath?.setAttribute('d', 'M12 11.5L7 6.5M7 6.5L2 1.5M7 6.5L12 1.5M7 6.5L2 11.5')
+    $crossIcon?.appendChild($crossPath)
 
-    $closeButton.appendChild($crossIcon)
-    $optionSelected.appendChild($optionSelectedSpan)
-    $optionSelected.appendChild($closeButton)
+    $closeButton?.appendChild($crossIcon)
+    $optionSelected?.appendChild($optionSelectedSpan)
+    $optionSelected?.appendChild($closeButton)
     $optionSelectedContainer?.appendChild($optionSelected)
   }
 

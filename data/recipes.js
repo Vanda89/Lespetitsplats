@@ -443,7 +443,7 @@ const recipes = [
   {
     id: 13,
     image: 'Recette13.jpg',
-    name: 'Salade mâchée de patates',
+    name: 'Salade de mâche et de patates',
     servings: 2,
     ingredients: [
       {

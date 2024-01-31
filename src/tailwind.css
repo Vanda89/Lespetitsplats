@@ -34,3 +34,9 @@ header {
 .option-selected-container {
     z-index: 3;
 }
+
+.rounded-hover:hover {
+
+    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.5rem !important;
+}

@@ -18,7 +18,7 @@
             <div class="search flex flex-col gap-7.5 w-full ">
                 <h1 class="text-yellow text-4.5xl leading-14.5 text-center mx-69 px-20 py-3 font-anton uppercase">
                     Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
-                <nav class="search-bar relative w-auto h-18 mx-60">
+                <nav class="search-bar relative w-auto h-18 mx-60 group">
                     <input type="text" id="main-search-input"
                         class="font-manrope w-full h-full pl-9 rounded-md focus:outline-none"
                         placeholder="Rechercher une recette, un ingrédient, ...">
@@ -30,10 +30,10 @@
                         </svg>
                     </button>
                     <button id="main-search-button"
-                        class="absolute top-2.5 right-2.5 bg-grey-700 rounded-md w-12 h-13 flex justify-center items-center"
+                        class="absolute top-2.5 right-2.5 bg-grey-700 rounded-lg w-12 h-13 flex justify-center items-center stroke-white group-hover:stroke-grey-700 group-hover:bg-yellow transition-colors "
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            class="w-7 h-7 stroke-[#FFF]">
+                            class="w-7 h-7 ">
 
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -47,7 +47,7 @@
                 <div class="recipes-header flex flex-col justify-between mt-7 gap-5.5">
                     <div class="filter-bar-container relative flex h-14">
                         <nav class="filter-bar flex gap-16 w-171"></nav>
-                        <p class="recipes-number absolute right-0 font-anton font-grey-700 text-xl"><span>1500</span>
+                        <p class="recipes-number absolute right-0 font-anton font-grey-700 text-xl"><span></span>
                             recettes
                         </p>
                     </div>

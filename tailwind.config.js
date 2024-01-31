@@ -21,6 +21,7 @@ module.exports = {
         240: '60rem'
       },
       spacing: {
+        1.6: '0.4rem',
         3.25: '0.8125rem',
         5.5: '1.375rem',
         6.5: '1.625rem',
@@ -71,14 +72,14 @@ module.exports = {
       'grey-700': '#1B1B1B',
       'grey-400': '#7A7A7A',
       'grey-200': '#C6C6C6',
-      'grey-100': '#EDEDED'
+      'grey-100': '#EDEDED',
+      'hover-search': '#7A7A7A'
     }
 
   },
   variants: {
     extend: {
-      backgroundColor: ['disabled'],
-      cursor: ['disabled']
+
     }
   },
   plugins: []
