@@ -50,7 +50,7 @@ class Recipe {
   }
 
   get utensils () {
-    return this._utensils.slice()
+    return this._utensils
   }
 }
 

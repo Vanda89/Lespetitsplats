@@ -27,7 +27,6 @@ const dropdown = {
     $dropdownHeader.classList.add('dropdown-header', 'flex', 'justify-between', 'items-center', 'w-full', 'pt-4', 'px-4', 'cursor-pointer')
 
     const $dropdownLabel = document.createElement('label')
-    $dropdownLabel.setAttribute('for', 'search')
     $dropdownLabel.classList.add('dropdown-label', 'font-manrope', 'font-medium', 'text-grey-700', 'text-base', 'cursor-pointer')
 
     const $chevronUpIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
@@ -45,7 +44,6 @@ const dropdown = {
 
     const $searchInput = document.createElement('input')
     $searchInput.setAttribute('type', 'text')
-    $searchInput.setAttribute('id', 'search')
     $searchInput.classList.add('dropdown-search-input', 'w-full', 'h-full', 'font-manrope', 'text-grey-400', 'text-sm', 'pl-2', 'rounded-sm', 'focus:outline-none')
 
     const $crossButton = document.createElement('button')
@@ -75,6 +73,10 @@ const dropdown = {
     const $buttonSelectedContainer = document.createElement('div')
     $buttonSelectedContainer.classList.add('button-selected-container', 'flex', 'flex-col', 'w-full', 'rounded-b-none', 'last:rounded-b-xl')
 
+    const $noOptionMessage = document.createElement('p')
+    $noOptionMessage.classList.add('no-option-message', 'hidden', 'text-grey-400', 'text-sm', 'font-manrope', 'px-4', 'py-2.5', 'rounded-b-xl', 'bg-white')
+    $noOptionMessage.textContent = 'Aucune correspondance'
+
     $dropdownButton.appendChild($dropdownSpan)
     $dropdownButton.appendChild($chevronDownIcon)
     $dropdown.appendChild($dropdownButton)
@@ -82,6 +84,7 @@ const dropdown = {
     $dropdownMenu.appendChild($dropdownHeader)
     $dropdownMenu.appendChild($searchContainer)
     $dropdownMenu.appendChild($optionContainer)
+    $dropdownMenu.appendChild($noOptionMessage)
     $dropdownHeader.appendChild($dropdownLabel)
     $dropdownHeader.appendChild($chevronUpIcon)
     $searchContainer.appendChild($searchInput)
@@ -94,18 +97,16 @@ const dropdown = {
     return $dropdown
   },
 
+  initializeDropdown ($dropdown, textContent) {
+    this.openDropdown($dropdown)
+    this.closeDropdown($dropdown)
+    this.setTextContent($dropdown, textContent)
+  },
+
   initializationDropdown ($ingredientsDropdown, $appliancesDropdown, $utensilsDropdown) {
-    this.openDropdown($ingredientsDropdown)
-    this.closeDropdown($ingredientsDropdown)
-    this.setTextContent($ingredientsDropdown, 'Ingrédients')
-
-    this.openDropdown($appliancesDropdown)
-    this.closeDropdown($appliancesDropdown)
-    this.setTextContent($appliancesDropdown, 'Appareils')
-
-    this.openDropdown($utensilsDropdown)
-    this.closeDropdown($utensilsDropdown)
-    this.setTextContent($utensilsDropdown, 'Ustensiles')
+    this.initializeDropdown($ingredientsDropdown, 'Ingrédients')
+    this.initializeDropdown($appliancesDropdown, 'Appareils')
+    this.initializeDropdown($utensilsDropdown, 'Ustensiles')
   },
 
   openDropdown ($dropdown) {
@@ -147,6 +148,11 @@ const dropdown = {
     $dropdownSpan.textContent = dropdownTitle
     const $dropdownLabel = $dropdown.querySelector('.dropdown-label')
     $dropdownLabel.textContent = dropdownTitle
+    $dropdownLabel.setAttribute('for', `search-${dropdownTitle}`)
+    const $searchInput = $dropdown.querySelector('.dropdown-search-input')
+    $searchInput.setAttribute('placeholder', 'Entrez votre recherche}')
+    $searchInput.setAttribute('aria-label', `Input de recherche pour ${dropdownTitle}`)
+    $searchInput.setAttribute('id', `search-${dropdownTitle}`)
   },
 
   // Bouton de l'option à ajouter dans le dropdown pour chacune des options correspondant à la recherche

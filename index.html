@@ -10,7 +10,7 @@
 
 <body class="bg-grey-100">
     <div class="main-container">
-        <header class="flex flex-col justify-center h-240 relative">
+        <header class="flex flex-col justify-center h-240 relative header-bg">
             <div class="flex absolute logo h-6 gap-1 left-18 top-18">
                 <img src="./assets/logo/Les_petits_plats.jpg" alt="Nom du site écrit dans le logo : Les petits plats">
                 <img src="./assets/icons/dish.png" alt="icône d'assiette rappelant le titre du site : Les petits plats">
@@ -43,17 +43,22 @@
             </div>
         </header>
         <main>
-            <section class="recipes-section flex flex-col gap-11 px-24">
+            <section class="recipes-section relative flex flex-col gap-11 px-24">
                 <div class="recipes-header flex flex-col justify-between mt-7 gap-5.5">
                     <div class="filter-bar-container relative flex h-14">
-                        <nav class="filter-bar flex gap-16 w-171"></nav>
+                        <nav class="filter-bar absolute flex gap-16 w-171"></nav>
                         <p class="recipes-number absolute right-0 font-anton font-grey-700 text-xl"><span></span>
                             recettes
                         </p>
                     </div>
                     <div class="option-selected-container flex flex-wrap gap-8"></div>
                 </div>
-                <div class="recipes-container grid grid-cols-3 2xl:grid-cols-4 top-33 gap-x-12 gap-y-16 ">
+                <div class="recipes-container grid grid-cols-3 2xl:grid-cols-4 top-33 gap-x-12 gap-y-16 "></div>
+                <div id="no-recipes-message" class="hidden flex flex-col items-center gap-15 pt-18 pb-40">
+                    <p class="text-center text-2xl font-bold font-manrope text-gray-500"></p>
+                    <img src="./assets/Photos/no_recipes_image.png"
+                        alt="Image représentant un cuisiner regardant un écran d'ordinateur et avec une expression visuelle déçue car il n'a trouvé aucune recette correspondant à sa recherche"
+                        class="w-72">
                 </div>
             </section>
         </main>

@@ -321,7 +321,7 @@ const recipes = [
         unit: 'grammes'
       },
       {
-        ingredient: 'Vinaigre Balsamic'
+        ingredient: 'Vinaigre Balsamique'
       },
       {
         ingredient: "Huile d'olive"
@@ -591,7 +591,7 @@ const recipes = [
       }
     ],
     time: 45,
-    description: "Faire cuire les pâtes si vous n'avez pas de pennes des coquillettes peuvent faire l'affaire. Découper les tomates en petits morceaux, soit en tranches soit en dés. Coupez le basilic en petites morceaux et mélangez le aux tomates.  Coupez la mozzarella en tranche. Préchauffez le four à 200°. Alternez entre couches de pattes et couches de tomates, terminez par une couche de pates et recouvrir du fromage. Laisser au four 30 minutes et régalez vous ! Une recette simple qui fera plaisir au petits comme aux grands.",
+    description: "Faire cuire les pâtes, si vous n'avez pas de pennes, des coquillettes peuvent faire l'affaire. Découper les tomates en petits morceaux, soit en tranches, soit en dés. Coupez le basilic en petites morceaux et mélangez le aux tomates. Coupez la mozzarella en tranche. Préchauffez le four à 200°. Alternez entre couches de pâtes et couches de tomates, terminez par une couche de pâtes et recouvrir du fromage. Laisser au four 30 minutes et régalez-vous ! Une recette simple qui fera plaisir aux petits comme aux grands.",
     appliance: 'Four',
     utensils: ['plat à gratin', 'couteau', 'râpe à fromage']
   },
@@ -691,7 +691,7 @@ const recipes = [
   {
     id: 20,
     image: 'Recette20.jpg',
-    name: 'Pates Carbonara',
+    name: 'Pâtes Carbonara',
     servings: 5,
     ingredients: [
       {
@@ -746,7 +746,7 @@ const recipes = [
         unit: 'grammes'
       },
       {
-        ingredient: 'Viande hachée 1% de matière grasse',
+        ingredient: 'Viande hachée, 1% de matière grasse',
         quantity: 400,
         unit: 'grammes'
       },
@@ -800,7 +800,7 @@ const recipes = [
     time: 30,
     description: 'Faire fondre le chocolat et le beurre au bain-marie. Dans un saladier, battre les œufs avec le sucre jusqu’à obtenir une texture de type mousse. Ajouter la farine ainsi que le mélange de beurre et chocolat fondu. Beurrer le moule à gâteaux. Mettre au four préchauffé à 200° puis faire chauffer pendant 15 minutes. C’est prêt. Servir avec une boule de glace.',
     appliance: 'Four',
-    utensils: ['moule à gateaux', 'fouet', 'casserole']
+    utensils: ['moule à gâteaux', 'fouet', 'casserole']
   },
   {
     id: 23,
@@ -841,7 +841,7 @@ const recipes = [
     time: 60,
     description: 'Étaler la pâte dans un moule et la piquer. Parsemer de beurre. Faire chauffer les lardons dans une poêle. Battre les œufs en ajoutant la crème fraîche et le lait. Finalement, ajouter les lardons, saler, poivrer à votre goût. Verser l’ensemble sur la pâte. Cuire environ 50 minutes.',
     appliance: 'Four',
-    utensils: ['moule à gateaux', 'rouleau à patisserie', 'fouet']
+    utensils: ['moule à gâteaux', 'rouleau à pâtisserie', 'fouet']
   },
   {
     id: 24,
@@ -879,7 +879,7 @@ const recipes = [
       }
     ],
     time: 40,
-    description: 'Découper le concombre et les tomates en dés, les mettre dans un saladier avec le mais et les miettes de poisson, ajouter les pates. Ajouter la mayonnaise. Mélanger le tout et servir frais.',
+    description: 'Découper le concombre et les tomates en dés, les mettre dans un saladier avec le mais et les miettes de poisson, ajouter les pâtes. Ajouter la mayonnaise. Mélanger le tout et servir frais.',
     appliance: 'Saladier',
     utensils: ['couteau', 'cuillère en bois']
   },
@@ -947,9 +947,9 @@ const recipes = [
       }
     ],
     time: 25,
-    description: 'Verser de l’huile dans une cocotte minute, couper les légumes et les verser dans l’huile chaude. Laisser cuire et remuer pendant 10 minutes. Passer au mixeur. Servir.',
+    description: 'Verser de l’huile dans un autocuiseur, couper les légumes et les verser dans l’huile chaude. Laisser cuire et remuer pendant 10 minutes. Passer au mixeur. Servir.',
     appliance: 'Mixer',
-    utensils: ['cocotte minute', 'couteau']
+    utensils: ['autocuiseur', 'couteau']
   },
   {
     id: 27,
@@ -1031,7 +1031,7 @@ const recipes = [
       {
         ingredient: 'Pois chiches',
         quantity: 1,
-        unit: 'boites'
+        unit: 'boîtes'
       },
       {
         ingredient: 'Ail',
@@ -1052,7 +1052,7 @@ const recipes = [
     time: 30,
     description: 'Prendre les pois chiches, les mettre dans le mixeur avec de l’huile d’olive, ajouter le jus des 2 citrons et du paprika selon le goût.',
     appliance: 'Mixer',
-    utensils: ['cuillère en bois', 'presse citron']
+    utensils: ['cuillère en bois', 'presse-citron']
   },
   {
     id: 30,
@@ -1118,7 +1118,7 @@ const recipes = [
   {
     id: 32,
     image: 'Recette32.jpg',
-    name: 'Croque Monsieur à la dinde',
+    name: 'Croque-Monsieur à la dinde',
     servings: 4,
     ingredients: [
       {
@@ -1260,7 +1260,7 @@ const recipes = [
     time: 25,
     description: 'Éplucher les légumes, les couper en morceaux et les mettre à cuire dans une cocotte minute environ 15 minutes. Mixer en ajoutant le beurre, la crème. Ajouter le cumin et la noix de muscade.',
     appliance: 'Mixer',
-    utensils: ['cocotte minute', 'couteau', 'cuillère en bois']
+    utensils: ['autocuiseur', 'couteau', 'cuillère en bois']
   },
   {
     id: 36,
@@ -1298,7 +1298,7 @@ const recipes = [
       }
     ],
     time: 35,
-    description: 'Râper les courgettes et les faire revenir pendant 15 minutes. Ajouter les fromages de chèvre frais. Préparer la béchamel avec le lait et la maïzena. Saler, poivrer, ajouter de la noix de muscade selon les goûts. Dans un plat, mettre un peu de sauce au fond, puis des lasagnes, puis des courgettes etc… terminer par de la sauce et ajouter le gruyère. Passer au four à 180° durant 20 à 25 minutes.',
+    description: 'Râper les courgettes et les faire revenir pendant 15 minutes. Ajouter les fromages de chèvre frais. Préparer la béchamel avec le lait et la maïzena. Saler, poivrer, ajouter de la noix de muscade selon les goûts. Dans un plat, mettre un peu de sauce au fond, puis des lasagnes, puis des courgettes, etc. Terminer par de la sauce et ajouter le gruyère. Passer au four à 180° durant 20 à 25 minutes.',
     appliance: 'Four',
     utensils: ['plat à gratin', 'râpe à fromage', 'fouet']
   },
@@ -1339,7 +1339,7 @@ const recipes = [
 
     ],
     time: 60,
-    description: 'Couper les courgettes dans le sens de la longueur. Vider les courgettes dans un saladier. Réserver. Faire revenir la chair des courgettes dans 25cl d’huile d’olive. Ajouter l’oignon puis la viande hachée. Mettre la farce dans les courgettes. Ajouter le coulis de tomates. Mettre au four pendant 30 minutes. Avant la fin de la cuisson ajouter le fromage râpé.',
+    description: 'Couper les courgettes dans le sens de la longueur. Vider les courgettes dans un saladier. Réserver. Faire revenir la chair des courgettes dans 25 cl d’huile d’olive. Ajouter l’oignon puis la viande hachée. Mettre la farce dans les courgettes. Ajouter le coulis de tomates. Mettre au four pendant 30 minutes. Avant la fin de la cuisson, ajouter le fromage râpé.',
     appliance: 'Four',
     utensils: ['couteau', 'cuillère en bois', 'Poêle à frire']
   },
@@ -1465,7 +1465,7 @@ const recipes = [
   {
     id: 42,
     image: 'Recette42.jpg',
-    name: 'Charlotte au poires',
+    name: 'Charlotte aux poires',
     servings: 3,
     ingredients: [
       {
@@ -1480,7 +1480,7 @@ const recipes = [
       {
         ingredient: 'Poires au jus',
         quantity: 0.5,
-        unit: 'boites'
+        unit: 'boîtes'
       },
       {
         ingredient: 'Boudoirs',
@@ -1524,7 +1524,7 @@ const recipes = [
     time: 50,
     description: 'Préchauffer le four à 200°. Étaler la pâte. La mettre dans un moule. Battre les œufs avec le sucre. Ajouter le jus de citron et le beurre. Verser le tout sur la pâte. Mettre au four 30 minutes. Bon appétit.',
     appliance: 'Four',
-    utensils: ['rouleau à patisserie', 'moule à tarte', 'presse citron']
+    utensils: ['rouleau à pâtisserie', 'moule à tarte', 'presse-citron']
   },
   {
     id: 44,
@@ -1663,7 +1663,7 @@ const recipes = [
       }
     ],
     time: 5,
-    description: 'Mélanger le jus de citron avec le sucre et la mascarpone. Ajouter la crème fraîche. Mélanger le tout et mettre au congélateur pendant 1 heure. Servir.',
+    description: 'Mélanger le jus de citron avec le sucre et le mascarpone. Ajouter la crème fraîche. Mélanger le tout et mettre au congélateur pendant 1 heure. Servir.',
     appliance: 'Saladier',
     utensils: ['fouet', 'verres', 'cuillère en bois']
   },
@@ -1680,7 +1680,7 @@ const recipes = [
       {
         ingredient: 'Tomates pelées',
         quantity: 1,
-        unit: 'boites'
+        unit: 'boîtes'
       },
       {
         ingredient: 'Lardons',
@@ -1690,7 +1690,7 @@ const recipes = [
       {
         ingredient: 'Champignons de paris',
         quantity: 1,
-        unit: 'boites'
+        unit: 'boîtes'
       },
       {
         ingredient: 'Gruyère',
@@ -1701,7 +1701,7 @@ const recipes = [
     time: 40,
     description: 'Étaler la pâte à pizza. Écraser les tomates pelées, les étaler sur la pâte, ajouter les lardons et les champignons. Ajouter le gruyère et passer au four à 220° durant 20 minutes.',
     appliance: 'Four',
-    utensils: ['rouleau à patisserie', 'râpe à fromage', 'couteau']
+    utensils: ['rouleau à pâtisserie', 'râpe à fromage', 'couteau']
   },
   {
     id: 49,
@@ -1753,7 +1753,7 @@ const recipes = [
         quantity: 6
       },
       {
-        ingredient: "Poudre d'amandes",
+        ingredient: 'Poudre d\'amandes',
         quantity: 500,
         unit: 'grammes'
       },
@@ -1771,6 +1771,6 @@ const recipes = [
     time: 60,
     description: 'Préparer la frangipane : Mélanger le sucre, la poudre d’amandes, le beurre et les œufs. Étaler la moitié de la pâte feuilletée et mettre dans un moule à tarte. Garnir de frangipane et recouvrir du reste de pâte feuilletée. Mettre au four 30 minutes.',
     appliance: 'Four',
-    utensils: ['rouleau à patisserie', 'fouet']
+    utensils: ['rouleau à pâtisserie', 'fouet']
   }
 ]
