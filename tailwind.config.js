@@ -3,6 +3,9 @@ module.exports = {
   content: ['./**/*.html', './scripts/**/*.js'],
   theme: {
     extend: {
+      backgroundImage: {
+        'header-bg': "url('../assets/Photos/background_header.jpg')"
+      },
       fontFamily: {
         anton: ['Anton', 'sans-serif'],
         manrope: ['Manrope', 'sans-serif']
@@ -12,12 +15,8 @@ module.exports = {
         171: '42.75rem'
       },
       height: {
-        5.5: '1.375rem',
         13: '3.25rem',
         18: '4.5rem',
-        64: '16rem',
-        96: '24rem',
-        182: '45.5rem',
         240: '60rem'
       },
       spacing: {
@@ -29,18 +28,11 @@ module.exports = {
         15: '3.75rem',
         18: '4.5rem',
         19: '4.75rem',
+        20: '5rem',
         25: '6.25rem',
         33: '8.25rem',
         38: '9.5rem',
-        50: '12.5rem'
-      },
-      margin: {
-        18: '4.5rem',
-        69: '17.25rem'
-      },
-      padding: {
-        20: '5rem',
-        25: '6.25rem',
+        50: '12.5rem',
         69: '17.25rem'
       },
       lineHeight: {
