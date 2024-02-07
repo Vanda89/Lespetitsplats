@@ -166,18 +166,35 @@ class App {
 
   filterRecipesBySearch () {
     const regex = new RegExp(this.mainInputValue, 'i')
+    this.filteredRecipesList = []
 
-    this.filteredRecipesList = this.recipesList.filter((recipe) => {
-      const matchesSearch = this.mainInputValue.length < 3 || regex.test(recipe._name) || regex.test(recipe._description) || recipe._ingredients.some(ingredient => regex.test(ingredient.ingredient))
+    for (let i = 0; i < this.recipesList.length; i++) {
+      const recipe = this.recipesList[i]
 
-      const matchesFilters = this.selectedOptionsList.every((selectedOption) =>
-        recipe.ingredientsList.includes(selectedOption) ||
-          recipe.appliance.includes(selectedOption) ||
-          recipe.utensils.includes(selectedOption)
-      )
+      let matchesSearch = false
+      if (this.mainInputValue.length < 3 || regex.test(recipe._name) || regex.test(recipe._description)) {
+        for (let j = 0; j < recipe._ingredients.length; j++) {
+          if (regex.test(recipe._ingredients[j].ingredient)) {
+            matchesSearch = true
+            break
+          }
+        }
+      }
 
-      return matchesSearch && matchesFilters
-    })
+      let matchesFilters = true
+      for (let j = 0; j < this.selectedOptionsList.length; j++) {
+        if (!recipe.ingredientsList.includes(this.selectedOptionsList[j]) &&
+            !recipe.appliance.includes(this.selectedOptionsList[j]) &&
+            !recipe.utensils.includes(this.selectedOptionsList[j])) {
+          matchesFilters = false
+          break
+        }
+      }
+
+      if (matchesSearch && matchesFilters) {
+        this.filteredRecipesList.push(recipe)
+      }
+    }
   }
 
   displayNoRecipesMessage () {
