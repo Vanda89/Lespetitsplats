@@ -1,4 +1,18 @@
 class App {
+  /**
+   * Create an instance of App
+   * @constructor
+   * @param {Object} recipeFactory
+   * @param {Array} $recipesCards - Node list of the cards
+   * @param {String} mainInputValue
+   * @param {Array} recipesList - Object array of all recipes
+   * @param {Array} filteredRecipesList - Object array of the filtered recipes based on the user's search and the selected options
+   *
+   * @param {Array} optionsList - Array of all options
+   * @param {Array} selectedOptionsList - Array of the selected options by the click event
+   * @param {Array} updatedOptionsList - Array of all options without the selected options
+   * @param {Array} filteredOptionsList - Array containing options from updatedOptionsList or all if no search
+   */
   constructor () {
     this.recipeFactory = new RecipeFactory()
 
@@ -6,10 +20,11 @@ class App {
     this.mainInputValue = ''
     this.recipesList = []
     this.filteredRecipesList = []
+
     this.optionsList = []
+    this.selectedOptionsList = []
     this.updatedOptionsList = []
     this.filteredOptionsList = []
-    this.selectedOptionsList = []
   }
 
   async displayRecipes () {
@@ -65,7 +80,7 @@ class App {
     )]
 
     options.forEach(option => {
-      dropdown.appendOption(option, $dropdown)
+      dropdown.appendOption($dropdown, option)
     })
 
     this.optionsList.push(options)
@@ -80,9 +95,7 @@ class App {
 
     const $optionsButtons = this.getDropdownElements($dropdown).$options
 
-    const optionsList = this.updatedOptionsList
-
-    this.toggleElementVisibility($optionsButtons, optionsList, optionProperty, true)
+    this.toggleElementVisibility($optionsButtons, this.updatedOptionsList, optionProperty, true)
   }
 
   toggleElementVisibility ($elementList, filteredList, optionProperty = null, useTextContent = false) {
@@ -91,12 +104,12 @@ class App {
       const value = typeof filter === 'object' ? filter[optionProperty].toLowerCase() : filter.toLowerCase()
       return value
     }))
-
+    console.log(filteredSet)
     // Test if the element has a text content or a data-option attribute
     $elementList.forEach(($element) => {
       const elementValue = useTextContent ? $element.textContent.toLowerCase() : $element.dataset.option.toLowerCase()
 
-      // Toggle 'hidden' class if the element is not in the filteredSet(filteredList)
+      // Toggle 'hidden' class if the element is not in the object filteredSet(filteredList)
       $element.classList.toggle('hidden', !filteredSet.has(elementValue))
     })
   }
@@ -198,16 +211,18 @@ class App {
       .slice(0, 2)
       .map(recipe => recipe.name.toLowerCase())
       .join('", "')
+
     if (suggestions) {
       $noRecipesMessage.textContent = `Aucune recette ne contient "${this.mainInputValue}".\nVous pouvez chercher "${suggestions}".`
     } else {
       $noRecipesMessage.textContent = `Aucune recette ne contient "${this.mainInputValue}". Essayez une autre recherche.`
     }
+
     $noRecipesMessage.classList.add('whitespace-pre-line')
   }
 
   // Handle the dropdowns' search input
-  handleSearchInput ($searchInput, $dropdown, $crossButton, $crossIcon, $optionsButtons, optionProperty) {
+  handleSearchInput ($dropdown, $searchInput, $crossButton, $crossIcon, $optionsButtons, optionProperty) {
     const $dropdowns = document.querySelectorAll('.dropdown')
 
     $searchInput.addEventListener('input', () => {
@@ -275,7 +290,7 @@ class App {
       // Append the option selected outside the dropdown and style it
       this.appendOptionSelected($dropdown, $optionButton.textContent)
       // Call the method to handle the close button of the options selected inside and outside the dropdown
-      this.handleCloseOptionCall($dropdown, optionProperty)
+      this.handleCloseOption($dropdown, optionProperty)
     }
 
     $optionsButtons.forEach(($optionButton, index) => {
@@ -283,14 +298,6 @@ class App {
       $optionButton?.addEventListener('click', () => handleOptionClick($optionButton, index))
     })
   }
-  /*
-      const t0 = performance.now()
-
- const t1 = performance.now()
-      console.log(
-        "L'appel de doSomething a demandé " + (t1 - t0) + ' millisecondes.'
-      )
-  */
 
   filterRecipesByOption () {
     const regex = new RegExp(this.mainInputValue, 'i')
@@ -328,7 +335,7 @@ class App {
   // Append the option button selected inside the dropdown
   appendOptionButtonSelected ($dropdown, optionText) {
     const $buttonSelectedContainer = $dropdown.querySelector('.button-selected-container')
-    const $optionSelected = dropdown.appendOption(optionText, $dropdown)
+    const $optionSelected = dropdown.appendOption($dropdown, optionText)
     $optionSelected.classList.add('option-button-selected', 'bg-yellow', 'font-bold')
     $buttonSelectedContainer.appendChild($optionSelected)
   }
@@ -340,7 +347,10 @@ class App {
 
     // Style the option selected inside the dropdown if it is the last one and all the options are hidden
     $selectedButtonList.forEach(($button, index) => {
-      $button.classList.remove('option-button')
+      if ($button.classList.contains('option-button')) {
+        $button.classList.remove('option-button')
+      }
+
       if (index === $selectedButtonList.length - 1 && allOptionsHidden) {
         $button.classList.add('rounded-b-lg')
       } else {
@@ -357,7 +367,7 @@ class App {
     dropdown.appendOptionSelected(optionText, $dropdown)
   }
 
-  handleCloseOptionCall ($dropdown, optionProperty) {
+  handleCloseOption ($dropdown, optionProperty) {
     const $closeButtonsSelected = document.querySelectorAll('.close-option-button')
     this.handleCloseOptionClick($closeButtonsSelected, $dropdown, optionProperty)
 
@@ -450,13 +460,14 @@ class App {
     this.handleMainSearchInput('ingredientsList', this.$ingredientsDropdown)
     this.handleMainSearchInput('appliance', this.$appliancesDropdown)
     this.handleMainSearchInput('utensils', this.$utensilsDropdown)
+
     const ingredientsElements = this.getDropdownElements(this.$ingredientsDropdown)
     const appliancesElements = this.getDropdownElements(this.$appliancesDropdown)
     const utensilsElements = this.getDropdownElements(this.$utensilsDropdown)
 
-    this.handleSearchInput(ingredientsElements.$searchInput, this.$ingredientsDropdown, ingredientsElements.$crossButton, ingredientsElements.$crossIcon, ingredientsElements.$options, 'ingredientsList')
-    this.handleSearchInput(appliancesElements.$searchInput, this.$appliancesDropdown, appliancesElements.$crossButton, appliancesElements.$crossIcon, appliancesElements.$options, 'appliance')
-    this.handleSearchInput(utensilsElements.$searchInput, this.$utensilsDropdown, utensilsElements.$crossButton, utensilsElements.$crossIcon, utensilsElements.$options, 'utensils')
+    this.handleSearchInput(this.$ingredientsDropdown, ingredientsElements.$searchInput, ingredientsElements.$crossButton, ingredientsElements.$crossIcon, ingredientsElements.$options, 'ingredientsList')
+    this.handleSearchInput(this.$appliancesDropdown, appliancesElements.$searchInput, appliancesElements.$crossButton, appliancesElements.$crossIcon, appliancesElements.$options, 'appliance')
+    this.handleSearchInput(this.$utensilsDropdown, utensilsElements.$searchInput, utensilsElements.$crossButton, utensilsElements.$crossIcon, utensilsElements.$options, 'utensils')
 
     this.handleOptionButton(this.$ingredientsDropdown, 'ingredientsList', ingredientsElements.$searchInput)
     this.handleOptionButton(this.$appliancesDropdown, 'appliance', appliancesElements.$searchInput)

@@ -92,7 +92,4 @@ class RecipeTemplate {
       ingredient.quantity.classList.add('text-grey-400')
     })
   }
-
-  assignRecipesAttributes (elements) {
-  }
 }
