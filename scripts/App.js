@@ -3,28 +3,25 @@ class App {
    * Create an instance of App
    * @constructor
    * @param {Object} recipeFactory
-   * @param {Array} $recipesCards - Node list of the cards
    * @param {String} mainInputValue
-   * @param {Array} recipesList - Object array of all recipes
-   * @param {Array} filteredRecipesList - Object array of the filtered recipes based on the user's search and the selected options
-   *
+   * @param {Array} $recipesCards - Array that will be filled with DOM elements (Node list of the cards)
+   * @param {Array} recipesList - Array that will be filled with all recipes objects (Object array of all recipes)
+   * @param {Array} filteredRecipesList - Array that will be filled with the recipes objects filtered (Object array of the recipes filtered)
    * @param {Array} optionsList - Array of all options
    * @param {Array} selectedOptionsList - Array of the selected options by the click event
    * @param {Array} updatedOptionsList - Array of all options without the selected options
-   * @param {Array} filteredOptionsList - Array containing options from updatedOptionsList or all if no search
    */
   constructor () {
     this.recipeFactory = new RecipeFactory()
 
-    this.$recipesCards = []
     this.mainInputValue = ''
+
+    this.$recipesCards = []
     this.recipesList = []
     this.filteredRecipesList = []
-
     this.optionsList = []
     this.selectedOptionsList = []
     this.updatedOptionsList = []
-    this.filteredOptionsList = []
   }
 
   async displayRecipes () {
@@ -34,22 +31,22 @@ class App {
     )
 
     // Create a document fragment to append the recipes cards to the DOM and avoid reflow
-    const fragment = document.createDocumentFragment()
+    const documentFragment = document.createDocumentFragment()
 
     this.recipesList.forEach((recipe) => {
       const recipeModel = new RecipeTemplate(recipe)
       const recipesCardDOM = recipeModel.createRecipeCardDOM()
       recipeModel.assignRecipeValues(recipesCardDOM)
       recipeModel.assignRecipesClasses(recipesCardDOM)
-      fragment.appendChild(recipesCardDOM.$card)
+      documentFragment.appendChild(recipesCardDOM.$card)
     })
-    this.$recipesContainer.appendChild(fragment)
+    this.$recipesContainer.appendChild(documentFragment)
 
     this.$recipesCards = document.querySelectorAll('.recipes-card')
   }
 
   async displayDropdown () {
-    // Append the dropdowns and add classes to them
+    // Append all dropdown and add classes to them
     const $ingredientsDropdown = dropdown.appendDropdown()
     $ingredientsDropdown.classList.add('ingredients-dropdown')
 
@@ -59,7 +56,7 @@ class App {
     const $utensilsDropdown = dropdown.appendDropdown()
     $utensilsDropdown.classList.add('utensils-dropdown')
 
-    // Add event listeners to open and close the dropdowns, and set the text content of the dropdown elements
+    // Add event listeners to open and close all dropdown, and set the text content of the dropdown elements
     await dropdown.initializationDropdown($ingredientsDropdown, $appliancesDropdown, $utensilsDropdown)
 
     // Display the options corresponding to each dropdown
@@ -84,6 +81,7 @@ class App {
     })
 
     this.optionsList.push(options)
+
     this.optionsList = this.optionsList.flat()
   }
 
@@ -104,7 +102,6 @@ class App {
       const value = typeof filter === 'object' ? filter[optionProperty].toLowerCase() : filter.toLowerCase()
       return value
     }))
-    console.log(filteredSet)
     // Test if the element has a text content or a data-option attribute
     $elementList.forEach(($element) => {
       const elementValue = useTextContent ? $element.textContent.toLowerCase() : $element.dataset.option.toLowerCase()
@@ -134,18 +131,23 @@ class App {
   }
 
   // Generic method to reset the inputs
-  handleResetInputListener ($button, $icon, $elementList, $input = null, optionProperty, $dropdown) {
-    $button.addEventListener('click', () => {
-      if ($input) {
-        $input.value = ''
-        // Dispatch an event to trigger the input event listener
-        $input.dispatchEvent(new Event('input', {
-          bubbles: true
-        }))
-      }
+  handleResetInputListener ($button, $input) {
+    // Check if the button already has a click listener
+    if (!this.hasClickListener) {
+      $button.addEventListener('click', () => {
+        if ($input.value) {
+          $input.value = ''
+          // Dispatch an event to trigger the input event listener
+          $input.dispatchEvent(new Event('input', {
+            bubbles: true,
+            cancelable: true
+          }))
+        }
+      })
 
-      $icon.classList.add('hidden')
-    })
+      // Mark the button as having a click listener
+      $button.hasClickListener = true
+    }
   }
 
   handleMainSearchInput (optionProperty, $dropdown) {
@@ -153,33 +155,31 @@ class App {
       // Get the value of the input
       this.mainInputValue = this.$mainSearchInput.value
 
-      // Add event listener to the cross button to reset the search
-      if (this.mainInputValue) {
-        this.handleResetInputListener(this.$mainCrossButton, this.$mainCrossIcon, this.$recipesCards, this.$mainSearchInput, optionProperty, $dropdown)
-        this.$mainCrossIcon.classList.remove('hidden')
+      // Call the method to filter the recipes based on the user's search and the selected options
+      this.filterRecipesBySearch()
 
-        // Call the method to filter the recipes based on the user's search and the selected options
-        this.filterRecipesBySearch()
+      // Update the options based on the filtered recipes
+      this.updateOptionsList()
 
-        // Update the options based on the filtered recipes
-        this.updateOptionsList()
+      // Update the view of options and recipes
+      this.updateViewAfterFiltering(optionProperty, $dropdown)
 
-        // Update the view of options and recipes
-        this.updateViewAfterFiltering(optionProperty, $dropdown)
+      this.$mainCrossIcon.classList[this.mainInputValue ? 'remove' : 'add']('hidden')
 
-        // Display the no recipes message if the user's search is less than 3 characters
-        if (this.mainInputValue.length >= 3) {
-          this.displayNoRecipesMessage()
-        }
-      } else {
-        this.$mainCrossIcon.classList.add('hidden')
+      // Display the no recipes message if the user's search is less than 3 characters
+      if (this.mainInputValue.length >= 3) {
+        this.displayNoRecipesMessage()
       }
     })
+    // Add event listener to the cross button to reset the search
+    this.handleResetInputListener(this.$mainCrossButton, this.$mainSearchInput)
   }
 
   filterRecipesBySearch () {
     const regex = new RegExp(this.mainInputValue, 'i')
 
+    console.log(this.mainInputValue)
+    console.log(this.selectedOptionsList)
     this.filteredRecipesList = this.recipesList.filter((recipe) => {
       const matchesSearch = this.mainInputValue.length < 3 || regex.test(recipe._name) || regex.test(recipe._description) || recipe._ingredients.some(ingredient => regex.test(ingredient.ingredient))
 
@@ -221,65 +221,66 @@ class App {
     $noRecipesMessage.classList.add('whitespace-pre-line')
   }
 
-  // Handle the dropdowns' search input
+  // Handle all dropdown's search input
   handleSearchInput ($dropdown, $searchInput, $crossButton, $crossIcon, $optionsButtons, optionProperty) {
-    const $dropdowns = document.querySelectorAll('.dropdown')
+    const $allDropdown = document.querySelectorAll('.dropdown')
 
     $searchInput.addEventListener('input', () => {
-      const input = $searchInput.value.toLowerCase()
+      const inputValue = $searchInput.value
 
-      this.filteredOptionsList = this.filterOptionsBySearch(input)
+      const filteredOptionsList = this.filterOptionsBySearch(inputValue)
 
-      // Add event listener to the cross button to reset the search
-      if (input) {
-        $crossIcon.classList.remove('hidden')
-        this.handleResetInputListener($crossButton, $crossIcon, $optionsButtons, $searchInput)
-      }
+      $crossIcon.classList[inputValue ? 'remove' : 'add']('hidden')
 
       // Filter the options based on the user's search and hide the others
-      this.toggleElementVisibility($optionsButtons, this.filteredOptionsList, optionProperty, true)
+      this.toggleElementVisibility($optionsButtons, filteredOptionsList, optionProperty, true)
 
       // Get the options buttons for the current dropdown and display the no option message if all the options are hidden
-      $dropdowns.forEach($dropdown => {
+      $allDropdown.forEach($dropdown => {
         const $currentOptionsButtons = $dropdown.querySelectorAll('.option-button')
         const $noOptionMessage = $dropdown.querySelector('.no-option-message')
 
         if (Array.from($currentOptionsButtons).every(button => button.classList.contains('hidden'))) {
-          console.log($currentOptionsButtons)
           $noOptionMessage.classList.remove('hidden')
         } else {
           $noOptionMessage.classList.add('hidden')
         }
       })
     })
+    // Add event listener to the cross button to reset the search
+    this.handleResetInputListener($crossButton, $searchInput)
   }
 
   // Filter the options based on the user's search in the dropdowns
   filterOptionsBySearch (input) {
-    // Update updatedOptionsList based on the selected options and the filtered recipes
+  // Update updatedOptionsList based on the selected options and the filtered recipes
     this.updateOptionsList()
 
     // Use a ternary operator to choose the options list
     const optionsList = this.updatedOptionsList.length > 0 ? this.updatedOptionsList : this.optionsList
 
+    // Create a regex from the user's input
+    const regex = new RegExp(input, 'i')
+
     // Filter the options that match the user's search and return them
     const currentSearchOptionsList = optionsList
-      .filter((option) => option.toLowerCase().includes(input))
+      .filter((option) => regex.test(option))
 
     return currentSearchOptionsList
   }
 
   handleOptionButton ($dropdown, optionProperty, $input) {
-    const $dropdowns = document.querySelectorAll('.dropdown')
+    const $allDropdown = document.querySelectorAll('.dropdown')
     const $optionsButtons = $dropdown.querySelectorAll('.option-button')
 
     const handleOptionClick = ($optionButton, index) => {
       $input.value = ''
       this.selectedOptionsList.push($optionButton.textContent)
+
       this.filterRecipesByOption()
       this.updateOptionsList()
 
-      $dropdowns.forEach($dropdown => {
+      $allDropdown.forEach($dropdown => {
         this.updateViewAfterFiltering(optionProperty, $dropdown)
       })
       // Find the last visible option button and add the border radius to it
@@ -294,27 +295,22 @@ class App {
     }
 
     $optionsButtons.forEach(($optionButton, index) => {
-      $optionButton.classList.remove('rounded-hover')
       $optionButton?.addEventListener('click', () => handleOptionClick($optionButton, index))
     })
   }
 
   filterRecipesByOption () {
-    const regex = new RegExp(this.mainInputValue, 'i')
-    const selectedOptionsLower = this.selectedOptionsList.map(option => option.toLowerCase().trim())
+    const inputRegex = new RegExp(this.mainInputValue, 'i')
 
     this.filteredRecipesList = this.recipesList.filter((recipe) => {
-      const matchesSearch = this.mainInputValue.length < 3 || regex.test(recipe._name) || regex.test(recipe._description) || recipe._ingredients.some(ingredient => regex.test(ingredient.ingredient))
+      const matchesSearch = this.mainInputValue.length < 3 || inputRegex.test(recipe._name) || inputRegex.test(recipe._description) || recipe._ingredients.some(ingredient => inputRegex.test(ingredient.ingredient))
 
-      const ingredientsListLower = recipe.ingredientsList.map(ingredient => ingredient.toLowerCase().trim())
-      const applianceLower = recipe.appliance.toLowerCase().trim()
-      const utensilsListLower = recipe.utensils.map(utensil => utensil.toLowerCase().trim())
-
-      const matchesFilters = selectedOptionsLower.every((selectedOption) =>
-        ingredientsListLower.includes(selectedOption) ||
-        applianceLower.includes(selectedOption) ||
-        utensilsListLower.includes(selectedOption)
-      )
+      const matchesFilters = this.selectedOptionsList.every((selectedOption) => {
+        const optionRegex = new RegExp(selectedOption.trim(), 'i')
+        return recipe.ingredientsList.some(ingredient => optionRegex.test(ingredient)) ||
+          optionRegex.test(recipe.appliance) ||
+          recipe.utensils.some(utensil => optionRegex.test(utensil))
+      })
 
       return matchesSearch && matchesFilters
     })
@@ -369,9 +365,9 @@ class App {
 
   handleCloseOption ($dropdown, optionProperty) {
     const $closeButtonsSelected = document.querySelectorAll('.close-option-button')
-    this.handleCloseOptionClick($closeButtonsSelected, $dropdown, optionProperty)
-
     const $closeOptionsSelected = document.querySelectorAll('.close-option-selected')
+
+    this.handleCloseOptionClick($closeButtonsSelected, $dropdown, optionProperty)
     this.handleCloseOptionClick($closeOptionsSelected, $dropdown, optionProperty)
   }
 
@@ -389,7 +385,11 @@ class App {
 
         this.filterRecipesByOption()
         this.updateOptionsList()
-        this.updateViewAfterFiltering(optionProperty, $dropdown)
+
+        const $allDropdown = document.querySelectorAll('.dropdown')
+        $allDropdown.forEach($dropdown => {
+          this.updateViewAfterFiltering(optionProperty, $dropdown)
+        })
       })
     })
   }
@@ -457,13 +457,13 @@ class App {
     this.$appliancesDropdown = document.querySelector('.appliances-dropdown')
     this.$utensilsDropdown = document.querySelector('.utensils-dropdown')
 
-    this.handleMainSearchInput('ingredientsList', this.$ingredientsDropdown)
-    this.handleMainSearchInput('appliance', this.$appliancesDropdown)
-    this.handleMainSearchInput('utensils', this.$utensilsDropdown)
-
     const ingredientsElements = this.getDropdownElements(this.$ingredientsDropdown)
     const appliancesElements = this.getDropdownElements(this.$appliancesDropdown)
     const utensilsElements = this.getDropdownElements(this.$utensilsDropdown)
+
+    this.handleMainSearchInput('ingredientsList', this.$ingredientsDropdown)
+    this.handleMainSearchInput('appliance', this.$appliancesDropdown)
+    this.handleMainSearchInput('utensils', this.$utensilsDropdown)
 
     this.handleSearchInput(this.$ingredientsDropdown, ingredientsElements.$searchInput, ingredientsElements.$crossButton, ingredientsElements.$crossIcon, ingredientsElements.$options, 'ingredientsList')
     this.handleSearchInput(this.$appliancesDropdown, appliancesElements.$searchInput, appliancesElements.$crossButton, appliancesElements.$crossIcon, appliancesElements.$options, 'appliance')

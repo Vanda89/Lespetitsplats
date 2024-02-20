@@ -106,6 +106,7 @@ const dropdown = {
   openDropdown ($dropdown) {
     const $dropdownButton = $dropdown.querySelector('.dropdown-button')
     const $dropdownMenu = $dropdown.querySelector('.dropdown-menu')
+
     $dropdownButton?.addEventListener('click', () => {
       $dropdownMenu?.classList.remove('hidden')
       $dropdownButton?.classList.add('hidden')
