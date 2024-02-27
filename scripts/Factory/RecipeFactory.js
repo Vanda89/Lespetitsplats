@@ -17,7 +17,7 @@ class Recipe {
 
   get image () {
     return (
-      window.location.origin + '/assets/Photos/Photos_P7_Les petits plats/' + `${this._image}`
+      window.location.origin + '../assets/Photos/Photos_P7_Les petits plats/' + `${this._image}`
     )
   }
 

@@ -35,10 +35,10 @@ class App {
 
     this.recipesList.forEach((recipe) => {
       const recipeModel = new RecipeTemplate(recipe)
-      const recipesCardDOM = recipeModel.createRecipeCardDOM()
-      recipeModel.assignRecipeValues(recipesCardDOM)
-      recipeModel.assignRecipesClasses(recipesCardDOM)
-      documentFragment.appendChild(recipesCardDOM.$card)
+      const recipeCardDOM = recipeModel.createRecipeCardDOM()
+      recipeModel.assignRecipeValues(recipeCardDOM)
+      recipeModel.assignRecipesClasses(recipeCardDOM)
+      documentFragment.appendChild(recipeCardDOM.$card)
     })
     this.$recipesContainer.appendChild(documentFragment)
 
@@ -81,8 +81,9 @@ class App {
     })
 
     this.optionsList.push(options)
-
+    console.log(this.optionsList)
     this.optionsList = this.optionsList.flat()
+    console.log(this.optionsList)
   }
 
   // Generic method to call the methods to update the view
@@ -178,8 +179,6 @@ class App {
   filterRecipesBySearch () {
     const regex = new RegExp(this.mainInputValue, 'i')
 
-    console.log(this.mainInputValue)
-    console.log(this.selectedOptionsList)
     this.filteredRecipesList = this.recipesList.filter((recipe) => {
       const matchesSearch = this.mainInputValue.length < 3 || regex.test(recipe._name) || regex.test(recipe._description) || recipe._ingredients.some(ingredient => regex.test(ingredient.ingredient))
 
