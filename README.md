@@ -1,5 +1,7 @@
-# Projet Bootcamp Lespetitsplats : Site algorythmique de recettes
+# Projet Bootcamp Lespetitsplats : Site algorithmique de recettes
 
+
+<img src="/assets/Photos/background_header.jpg"/>
 
 ## Introduction
 Vous êtes freelance et vous venez d’être missionné par l’entreprise **“Les Petits Plats”** en tant que développeur Front-End pour une mission de 3 mois.
