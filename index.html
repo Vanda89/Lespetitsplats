@@ -12,25 +12,26 @@
 <body class="bg-grey-100">
     <div class="main-container">
         <header class="flex flex-col justify-center h-240 relative bg-header-bg bg-no-repeat bg-cover bg-bottom">
-            <div class="flex absolute logo h-6 gap-1 left-18 top-18">
+            <div class="flex absolute logo h-6 gap-1 left-1/4 md:left-18 top-18">
                 <img src="./assets/logo/Les_petits_plats.jpg" alt="Nom du site écrit dans le logo : Les petits plats">
                 <img src="./assets/icons/dish.png" alt="icône d'assiette rappelant le titre du site : Les petits plats">
             </div>
+
             <div class="search flex flex-col gap-7.5 w-full ">
-                <h1 class="text-yellow text-4.5xl leading-14.5 text-center mx-69 px-20 py-3 font-anton uppercase">
+                <h1 class="text-yellow text-xl md:text-3xl lg:text-4.5xl  text-center mx-12 xl:mx-69 md:px-20 lg:px-12 py-3 font-anton uppercase">
                     Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
-                <nav class="search-bar relative w-auto h-18 mx-60 group">
+                <nav class="search-bar  relative w-auto h-18 mx-2 md:mx-24 xl:mx-60 group">
                     <input type="text" id="main-search-input"
                         class="font-manrope w-full h-full pl-9 rounded-md focus:outline-none"
                         placeholder="Rechercher une recette, un ingrédient, ...">
-                    <button id="main-cross-button" class="absolute top-5 right-16 ">
+                    <button aria-label="Close" id="main-cross-button" class="absolute top-5 right-16 ">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="main-cross-icon"
                             class="hidden w-8 h-8 stroke-[#7A7A7A] fill-[#7A7A7A] stroke-0.5">
                             <path stroke-linecap="round" stroke-linejoin="round" class="translate-y-0.5 stroke-1.5 "
                                 d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
                         </svg>
                     </button>
-                    <button id="main-search-button"
+                    <button aria-label="Rechercher" id="main-search-button"
                         class="absolute top-2.5 right-2.5 bg-grey-700 rounded-lg w-12 h-13 flex justify-center items-center stroke-white group-hover:stroke-grey-700 group-hover:bg-yellow transition-colors "
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -43,21 +44,26 @@
                 </nav>
             </div>
         </header>
+
         <main>
-            <section class="recipes-section relative flex flex-col gap-11 px-24">
+            <section class="recipes-section  relative flex flex-col   gap-32 mx-4 lg:px-12 xl:px-24 ">
                 <div class="recipes-header flex flex-col justify-between mt-7 gap-5.5">
                     <h2 class="absolute w-1 h-1 p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0">Vos recettes
                     </h2>
-                    <div class="filter-bar-container relative flex h-14">
-                        <nav class="filter-bar absolute flex gap-16 w-171"></nav>
+
+                    <div class="filter-bar-container relative flex h-14 ">
+                        <nav class="filter-bar  absolute flex flex-col md:flex-row items-start md:gap-2 "></nav>
                         <p class="recipes-number absolute right-0 font-anton font-grey-700 text-xl"><span></span>
                             recettes
                         </p>
                     </div>
+
                     <div class="option-selected-container flex flex-wrap gap-8"></div>
                 </div>
-                <div class="recipes-container grid grid-cols-3 2xl:grid-cols-4 top-33 gap-x-12 gap-y-16 "></div>
-                <div id="no-recipes-message" class="hidden flex flex-col items-center gap-15 pt-18 pb-40">
+
+                <div class="recipes-container lg:mx-auto justify-center grid  lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  lg:gap-x-32 gap-y-16 "></div>
+                
+                <div id="no-recipes-message" class="hidden  flex-col items-center gap-15 pt-18 pb-40">
                     <p class="text-center text-2xl font-bold font-manrope text-gray-500"></p>
                     <img src="./assets/Photos/no_recipes_image.png"
                         alt="Image représentant un cuisiner regardant un écran d'ordinateur et avec une expression visuelle déçue car il n'a trouvé aucune recette correspondant à sa recherche"
