@@ -1177,6 +1177,10 @@ video {
   text-transform: lowercase;
 }
 
+.leading-loose{
+  line-height: 2;
+}
+
 .text-black{
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -1278,6 +1282,11 @@ video {
     margin-right: 6rem;
   }
 
+  .md\:mx-20{
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
   .md\:flex-row{
     flex-direction: row;
   }
@@ -1294,6 +1303,14 @@ video {
   .md\:text-3xl{
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .md\:leading-10{
+    line-height: 2.5rem;
+  }
+
+  .md\:leading-normal{
+    line-height: 1.5;
   }
 }
 
@@ -1319,6 +1336,10 @@ video {
 
   .lg\:text-4\.5xl{
     font-size: 2.5rem;
+  }
+
+  .lg\:leading-relaxed{
+    line-height: 1.625;
   }
 }
 
