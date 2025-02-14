@@ -606,6 +606,10 @@ video {
   top: 1.25rem;
 }
 
+.m-\[-1px\]{
+  margin: -1px;
+}
+
 .mx-4{
   margin-left: 1rem;
   margin-right: 1rem;
@@ -650,6 +654,10 @@ video {
 
 .hidden{
   display: none;
+}
+
+.h-1{
+  height: 0.25rem;
 }
 
 .h-13{
@@ -710,6 +718,10 @@ video {
 
 .max-h-80{
   max-height: 20rem;
+}
+
+.w-1{
+  width: 0.25rem;
 }
 
 .w-12{
@@ -890,6 +902,14 @@ video {
   overflow: auto;
 }
 
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.whitespace-nowrap{
+  white-space: nowrap;
+}
+
 .whitespace-pre-line{
   white-space: pre-line;
 }
@@ -940,6 +960,10 @@ video {
 
 .border{
   border-width: 1px;
+}
+
+.border-0{
+  border-width: 0px;
 }
 
 .border-grey-200{
@@ -1030,6 +1054,10 @@ video {
 .object-cover{
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.p-0{
+  padding: 0px;
 }
 
 .p-4{
